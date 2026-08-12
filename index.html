@@ -325,10 +325,10 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
     <!-- 商户消耗分析 -->
     <div class="section">
       <div class="section-head"><h2 class="section-title">商户消耗分析</h2><span class="section-badge" id="custBadge"></span></div>
-      <div class="section-desc">按商户维度统计星币消耗 TOP 15，并列出每个商户消耗星币最多的三个功能（按星币消耗量降序）。</div>
+      <div class="section-desc">按商户维度统计星币消耗 TOP 15，含运营部门（取该商户消耗占比最高的部门），并列出每个商户消耗星币最多的三个功能（按星币消耗量降序）。</div>
       <div style="overflow-x:auto;">
         <table class="data-table" id="tblCustomer">
-          <thead><tr><th class="num">#</th><th>商户名称</th><th class="num">星币消耗</th><th class="num">占比</th><th class="num">使用次数</th><th class="num">bosid数</th><th>消耗最多的三个功能</th></tr></thead>
+          <thead><tr><th class="num">#</th><th>商户名称</th><th>运营部门</th><th class="num">星币消耗</th><th class="num">占比</th><th class="num">使用次数</th><th class="num">bosid数</th><th>消耗最多的三个功能</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -476,19 +476,12 @@ function ensureChart(id){ if(!charts[id]) charts[id] = echarts.init(document.get
 
 /* ===== Daily Trend Chart ===== */
 function renderDailyTrend(data){
-  // Aggregate coin by date from filtered data
+  // 日趋势图：不受日期筛选影响（始终显示全部日期趋势），但跟随其他筛选项（解决方案/部门/业务大类/功能分类/Bosid/商户名称等）
+  const nd = getFilteredNoDate();
   const dm = {};
-  data.forEach(r => { dm[r.date] = (dm[r.date]||0) + r.coin; });
-  const dates = Object.keys(dm).sort();
-  // Determine which dates to show: if date filter set, show only filtered; else show all daily trend data
-  let showDates, showValues;
-  if(filterState.date.size){
-    showDates = dates;
-    showValues = dates.map(d=>Math.round(dm[d]));
-  } else {
-    showDates = DAILY_TREND.map(d=>d.d);
-    showValues = DAILY_TREND.map(d=>d.c);
-  }
+  nd.forEach(r => { dm[r.date] = (dm[r.date]||0) + r.coin; });
+  const showDates = Object.keys(dm).sort();
+  const showValues = showDates.map(d=>Math.round(dm[d]));
   const chart = ensureChart('dailyTrendChart');
   chart.setOption({
     tooltip:{trigger:'axis', formatter:p=>p[0].axisValue+'<br/>星币消耗: <b>'+p[0].value.toLocaleString()+'</b>'},
@@ -757,7 +750,12 @@ function renderIntervalModule(data){
 
 function renderCustomerModule(data){
   const m = groupBy(data, r=>r.customer);
-  let arr = [...m.entries()].map(([k,v])=>({name:k, coin:v.coin, count:v.count, bosids:v.bosids.size})).sort((a,b)=>b.coin-a.coin).slice(0,15);
+  let arr = [...m.entries()].map(([k,v])=>{
+    // 收集该商户涉及的运营部门（按星币消耗降序，取 TOP 部门展示）
+    const dm = groupBy(data.filter(r=>r.customer===k), r=>r.op_dept);
+    const depts = [...dm.entries()].map(([dk,dv])=>({name:dk, coin:dv.coin})).sort((a,b)=>b.coin-a.coin).map(d=>d.name);
+    return {name:k, coin:v.coin, count:v.count, bosids:v.bosids.size, depts:depts};
+  }).sort((a,b)=>b.coin-a.coin).slice(0,15);
   const total = arr.reduce((s,a)=>s+a.coin,0);
   arr.forEach(c=>{
     const fm = groupBy(data.filter(r=>r.customer===c.name), r=>r.func_cat);
@@ -767,10 +765,12 @@ function renderCustomerModule(data){
   const tb = document.querySelector('#tblCustomer tbody');
   tb.innerHTML = arr.map((c,i)=>{
     const pct = total ? c.coin/total*100 : 0;
+    const deptTxt = c.depts.length ? c.depts.slice(0,2).join('、')+(c.depts.length>2?' +'+(c.depts.length-2):'') : '—';
     const tags = c.top3.length ? c.top3.map(t=>'<div class="tag-row"><b>'+t.name+'</b> <span class="tag-coin">('+Math.round(t.coin).toLocaleString()+')</span></div>').join('') : '<span class="tag-coin">—</span>';
     return '<tr>'+
       '<td class="num">'+(i+1)+'</td>'+
       '<td><span class="func-name">'+c.name+'</span></td>'+
+      '<td>'+deptTxt+'</td>'+
       '<td class="num">'+Math.round(c.coin).toLocaleString()+'</td>'+
       '<td class="num">'+pct.toFixed(1)+'%</td>'+
       '<td class="num">'+c.count.toLocaleString()+'</td>'+
