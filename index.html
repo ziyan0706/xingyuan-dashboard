@@ -77,6 +77,12 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 .reset-btn:hover { background:#FEE2E2; }
 .filter-summary { margin-left:auto; display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:12px; color:#64748B; }
 .filter-summary .chip { background:#EEF2FF; color:#4A6CF7; padding:2px 10px; border-radius:12px; font-size:12px; }
+/* 日期跨度选择器 */
+.date-range { display:flex; align-items:center; gap:6px; }
+.date-sel { min-width:118px; padding:6px 8px; border:1px solid #E2E8F0; border-radius:6px; background:#fff; color:#475569; font-size:13px; cursor:pointer; }
+.date-sel:focus { border-color:#4A6CF7; outline:none; }
+.date-sel:hover { border-color:#4A6CF7; }
+.date-range .tilde { color:#94A3B8; font-size:13px; flex:0 0 auto; }
 
 .dropdown { position:absolute; top:calc(100% + 4px); left:0; min-width:220px; max-height:300px; background:#fff; border:1px solid #E2E8F0; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.10); z-index:300; display:none; flex-direction:column; }
 .dropdown.open { display:flex; }
@@ -243,7 +249,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 
   <!-- ========== Filter Bar (sticky) ========== -->
   <div class="filter-bar" id="filterBar">
-    <div class="filter-item" data-filter="date"><label>日期</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
+    <div class="filter-item date-range-item" data-filter="date"><label>日期跨度</label><div class="date-range"><select class="date-sel" id="dateStart" onchange="onDateRangeChange()"></select><span class="tilde">~</span><select class="date-sel" id="dateEnd" onchange="onDateRangeChange()"></select></div></div>
     <div class="filter-item" data-filter="solution"><label>解决方案</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
     <div class="filter-item" data-filter="sol_ver"><label>解决方案版本</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
     <div class="filter-item" data-filter="fe_dept"><label>前端部门</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
@@ -1253,6 +1259,33 @@ function updateFilterBtn(btn, selected){
   else val.textContent='已选 '+selected.size+' 项';
   btn.classList.toggle('active', selected.size>0);
 }
+/* ===== 日期跨度选择 ===== */
+function initDateRange(){
+  const opts = FILTER_OPTIONS.dates;
+  const sSel = document.getElementById('dateStart');
+  const eSel = document.getElementById('dateEnd');
+  if(!sSel || !eSel) return;
+  const html = opts.map(d=>'<option value="'+d+'">'+d+'</option>').join('');
+  sSel.innerHTML = html; eSel.innerHTML = html;
+  sSel.value = opts[0]; eSel.value = opts[opts.length-1];
+  filterState.date = new Set(opts); // 默认全区间
+}
+function onDateRangeChange(){
+  const sSel = document.getElementById('dateStart');
+  const eSel = document.getElementById('dateEnd');
+  if(!sSel || !eSel) return;
+  let i = FILTER_OPTIONS.dates.indexOf(sSel.value);
+  let j = FILTER_OPTIONS.dates.indexOf(eSel.value);
+  if(i<0) i=0;
+  if(j<0) j=FILTER_OPTIONS.dates.length-1;
+  if(i>j){ // 起>止，自动交换并回写下拉
+    const t=i; i=j; j=t;
+    sSel.value = FILTER_OPTIONS.dates[i];
+    eSel.value = FILTER_OPTIONS.dates[j];
+  }
+  filterState.date = new Set(FILTER_OPTIONS.dates.slice(i, j+1));
+  renderFilterSummary(); refresh();
+}
 function filterDropdownItems(input){
   const q = input.value.trim().toLowerCase();
   const list = input.closest('.dropdown').querySelector('.dropdown-list');
@@ -1289,12 +1322,23 @@ function resetAllFilters(){
   // 部门视角重置为默认「前端部门」（只影响部门分析模块的展示维度）
   deptView='frontend';
   document.querySelectorAll('.dept-toggle-btn').forEach(b=>b.classList.toggle('active', b.dataset.view==='frontend'));
+  initDateRange();
   renderFilterSummary(); refresh();
 }
 function renderFilterSummary(){
   const el = document.getElementById('filterSummary');
   const chips = [];
-  for(const k of Object.keys(filterState)){ if(filterState[k].size) chips.push('<span class="chip">'+FILTER_LABELS[k]+': '+filterState[k].size+'项</span>'); }
+  for(const k of Object.keys(filterState)){
+    if(!filterState[k].size) continue;
+    if(k==='date'){
+      // 全区间（等于所有可选日期）视为未筛选，不显示 chip
+      if(filterState.date.size === FILTER_OPTIONS.dates.length) continue;
+      const arr = [...filterState.date].sort();
+      chips.push('<span class="chip">日期: '+arr[0]+' ~ '+arr[arr.length-1]+'</span>');
+      continue;
+    }
+    chips.push('<span class="chip">'+FILTER_LABELS[k]+': '+filterState[k].size+'项</span>');
+  }
   el.innerHTML = chips.length ? chips.join('') : '<span style="color:#94A3B8;">未筛选（全部数据）</span>';
 }
 document.addEventListener('click', e=>{
@@ -1314,6 +1358,7 @@ function refresh(){
 }
 
 initSolModuleSelects();
+initDateRange();
 document.getElementById('dateBadge').textContent = '数据周期: ' + FILTER_OPTIONS.dates[0] + ' ~ ' + FILTER_OPTIONS.dates[FILTER_OPTIONS.dates.length-1];
 window.addEventListener('resize', ()=>{ Object.values(charts).forEach(c=>c && c.resize()); });
 refresh();
