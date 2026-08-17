@@ -83,6 +83,12 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 .date-sel:focus { border-color:#4A6CF7; outline:none; }
 .date-sel:hover { border-color:#4A6CF7; }
 .date-range .tilde { color:#94A3B8; font-size:13px; flex:0 0 auto; }
+/* 日期模式切换（按日/按周） */
+.date-mode-toggle { display:flex; align-items:center; border:1px solid #E2E8F0; border-radius:6px; overflow:hidden; flex:0 0 auto; }
+.date-mode-toggle .dm-btn { border:none; background:#fff; color:#64748B; font-size:12px; padding:6px 10px; cursor:pointer; }
+.date-mode-toggle .dm-btn.active { background:#4A6CF7; color:#fff; }
+.week-sel { min-width:170px; padding:6px 8px; border:1px solid #E2E8F0; border-radius:6px; background:#fff; color:#475569; font-size:13px; cursor:pointer; }
+.week-sel:focus, .week-sel:hover { border-color:#4A6CF7; outline:none; }
 
 .dropdown { position:absolute; top:calc(100% + 4px); left:0; min-width:220px; max-height:300px; background:#fff; border:1px solid #E2E8F0; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.10); z-index:300; display:none; flex-direction:column; }
 .dropdown.open { display:flex; }
@@ -249,7 +255,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 
   <!-- ========== Filter Bar (sticky) ========== -->
   <div class="filter-bar" id="filterBar">
-    <div class="filter-item date-range-item" data-filter="date"><label>日期跨度</label><div class="date-range"><select class="date-sel" id="dateStart" onchange="onDateRangeChange()"></select><span class="tilde">~</span><select class="date-sel" id="dateEnd" onchange="onDateRangeChange()"></select></div></div>
+    <div class="filter-item date-range-item" data-filter="date"><label>日期</label><div class="date-mode-toggle"><button type="button" class="dm-btn active" data-mode="day" onmousedown="event.preventDefault()" onclick="setDateMode('day')">按日</button><button type="button" class="dm-btn" data-mode="week" onmousedown="event.preventDefault()" onclick="setDateMode('week')">按周</button></div><div class="date-range" id="dayRange"><select class="date-sel" id="dateStart" onchange="onDateRangeChange()"></select><span class="tilde">~</span><select class="date-sel" id="dateEnd" onchange="onDateRangeChange()"></select></div><select class="week-sel" id="weekSel" style="display:none;" onchange="onWeekChange()"></select></div>
     <div class="filter-item" data-filter="solution"><label>解决方案</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
     <div class="filter-item" data-filter="sol_ver"><label>解决方案版本</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
     <div class="filter-item" data-filter="fe_dept"><label>前端部门</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
@@ -276,7 +282,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 
   <!-- 星币消耗日趋势 -->
   <div class="daily-trend-wrap">
-    <div class="trend-title">星币消耗日趋势</div>
+    <div class="trend-title" id="trendTitle">星币消耗日趋势</div>
     <div class="trend-chart" id="dailyTrendChart"></div>
   </div>
 
@@ -433,6 +439,10 @@ let activeTab = 'overview';
 let deptView = 'frontend';
 let intervalMode = 'count';
 const charts = {};
+let dateMode = 'day';          // 'day' | 'week'
+let WEEKS = [];               // 由 FILTER_OPTIONS.dates 派生的周列表
+let selectedWeekIdx = -1;     // 当前选中的周下标（按周模式）
+let dateToWeekIdx = {};       // date字符串 -> 周下标
 
 function applyDeptView(data){
   // 部门视角仅作用于「部门消耗分析」模块（见 renderDeptModule），不再作为全局分类筛选
@@ -482,13 +492,40 @@ function ensureChart(id){ if(!charts[id]) charts[id] = echarts.init(document.get
 
 /* ===== Daily Trend Chart ===== */
 function renderDailyTrend(data){
-  // 日趋势图：不受日期筛选影响（始终显示全部日期趋势），但跟随其他筛选项（解决方案/部门/业务大类/功能分类/Bosid/商户名称等）
+  const tt = document.getElementById('trendTitle');
+  const chart = ensureChart('dailyTrendChart');
+  // 按周模式：聚合为周趋势
+  if(dateMode==='week' && WEEKS.length){
+    if(tt) tt.textContent = '星币消耗周趋势';
+    const nd = getFilteredNoDate();
+    const wm = {};
+    nd.forEach(r=>{ const wi = dateToWeekIdx[r.date]; if(wi==null) return; wm[wi]=(wm[wi]||0)+r.coin; });
+    const labels = WEEKS.map((w,i)=> w.label + String.fromCharCode(10) + w.rangeText);
+    const vals = WEEKS.map((w,i)=>Math.round(wm[i]||0));
+    chart.setOption({
+      tooltip:{trigger:'axis', formatter:p=>{ const i=p[0].dataIndex; return WEEKS[i].label+' ('+WEEKS[i].rangeText+')<br/>星币消耗: <b>'+p[0].value.toLocaleString()+'</b>'; }},
+      grid:{left:60,right:30,top:20,bottom:30},
+      xAxis:{type:'category',data:labels,axisLabel:{fontSize:11,interval:0,formatter:v=>v.replace(String.fromCharCode(10),' ').replace(' (',String.fromCharCode(10)+'(')}},
+      yAxis:{type:'value',axisLabel:{formatter:v=>v>=10000?(v/10000+'万'):v.toLocaleString()}},
+      series:[{type:'line',data:vals,smooth:true,
+        lineStyle:{color:'#4A6CF7',width:2},
+        itemStyle:{color:'#4A6CF7'},
+        areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[
+          {offset:0,color:'rgba(74,108,247,0.25)'},{offset:1,color:'rgba(74,108,247,0.02)'}
+        ])},
+        symbol:'circle',symbolSize:6,
+        label:{show:true,position:'top',fontSize:11,color:'#475569',formatter:p=>p.value>=10000?(p.value/10000).toFixed(1)+'万':p.value}
+      }]
+    },true);
+    return;
+  }
+  // 日趋势图：不受日期筛选影响（始终显示全部日期趋势），但跟随其他筛选项
+  if(tt) tt.textContent = '星币消耗日趋势';
   const nd = getFilteredNoDate();
   const dm = {};
   nd.forEach(r => { dm[r.date] = (dm[r.date]||0) + r.coin; });
   const showDates = Object.keys(dm).sort();
   const showValues = showDates.map(d=>Math.round(dm[d]));
-  const chart = ensureChart('dailyTrendChart');
   chart.setOption({
     tooltip:{trigger:'axis', formatter:p=>p[0].axisValue+'<br/>星币消耗: <b>'+p[0].value.toLocaleString()+'</b>'},
     grid:{left:60,right:30,top:20,bottom:30},
@@ -517,9 +554,16 @@ function renderKPIs(data){
   const adoption = totalCount ? adopted/totalCount*100 : 0;
   const bm = groupBy(data, r=>r.bosid);
   let high = 0; bm.forEach(o=>{ if(o.coin>=10000) high++; });
-  const dsel = filterState.date.size ? [...filterState.date] : FILTER_OPTIONS.dates;
+  const dsel = filterState.date.size ? [...filterState.date].sort() : FILTER_OPTIONS.dates;
+  let periodLabel;
+  if(dateMode==='week' && selectedWeekIdx>=0 && selectedWeekIdx<WEEKS.length){
+    const w = WEEKS[selectedWeekIdx];
+    periodLabel = w.label + ' ' + w.rangeText;
+  } else {
+    periodLabel = (dsel.length>1? dsel[0]+' ~ '+dsel[dsel.length-1] : (dsel.length? dsel[0] : '--'));
+  }
   document.getElementById('kpiCoin').textContent = Math.round(totalCoin).toLocaleString();
-  document.getElementById('kpiCoinSub').textContent = '数据周期 ' + (dsel.length>1? dsel[0]+' ~ '+dsel[dsel.length-1] : (dsel.length? dsel[0] : '--'));
+  document.getElementById('kpiCoinSub').textContent = '数据周期 ' + periodLabel;
   document.getElementById('kpiCount').textContent = totalCount.toLocaleString();
   document.getElementById('kpiAvg').textContent = Math.round(avgCoin).toLocaleString();
   document.getElementById('kpiAcctAvg').textContent = Math.round(avgB).toLocaleString();
@@ -533,6 +577,23 @@ function renderKPIs(data){
 }
 function renderMoM(curCoin, curBosid, curWid){
   const ids = ['kpiCoinMoM','kpiBosidMoM','kpiWidMoM'];
+  // ===== 按周模式：周环比（本周 vs 上周） =====
+  if(dateMode==='week'){
+    if(selectedWeekIdx<=0){ ids.forEach(id=>{ const e=document.getElementById(id); e.className='kpi-mom neutral'; e.textContent='周环比 — (首周无上周数据)'; }); return; }
+    const curDates = new Set(WEEKS[selectedWeekIdx].dates);
+    const prevDates = new Set(WEEKS[selectedWeekIdx-1].dates);
+    const cur = getFilteredNoDate().filter(r=>curDates.has(r.date));
+    const prev = getFilteredNoDate().filter(r=>prevDates.has(r.date));
+    const pCoin = prev.reduce((s,r)=>s+r.coin,0);
+    const pBosid = new Set(prev.map(r=>r.bosid).filter(Boolean)).size;
+    const pWid = new Set(prev.map(r=>r.wid).filter(Boolean)).size;
+    const setM = (id,c,p)=>{ const e=document.getElementById(id); if(p>0){ const pct=(c-p)/p*100; e.className='kpi-mom '+(pct>=0?'up':'down'); e.textContent='周环比 '+(pct>=0?'▲':'▼')+Math.abs(pct).toFixed(1)+'%'; } else { e.className='kpi-mom neutral'; e.textContent='周环比 —'; } };
+    setM('kpiCoinMoM',curCoin,pCoin);
+    setM('kpiBosidMoM',curBosid,pBosid);
+    setM('kpiWidMoM',curWid,pWid);
+    return;
+  }
+  // ===== 按日模式：日环比（单日 vs 前一日） =====
   const sel = filterState.date.size ? [...filterState.date] : FILTER_OPTIONS.dates;
   if(sel.length!==1){ ids.forEach(id=>{ const e=document.getElementById(id); e.className='kpi-mom neutral'; e.textContent='环比 — (选择单日查看)'; }); return; }
   const idx = FILTER_OPTIONS.dates.indexOf(sel[0]);
@@ -1259,8 +1320,35 @@ function updateFilterBtn(btn, selected){
   else val.textContent='已选 '+selected.size+' 项';
   btn.classList.toggle('active', selected.size>0);
 }
-/* ===== 日期跨度选择 ===== */
+/* ===== 日期跨度选择 / 周选择 ===== */
+function buildWeeks(){
+  // 以「周一」为周起始，按数据实际存在的日期派生周列表（仅包含有数据的周）
+  WEEKS = []; dateToWeekIdx = {};
+  const ds = FILTER_OPTIONS.dates; // 已升序
+  let curMonday = null, curDates = [];
+  const pushWeek = ()=>{
+    if(!curDates.length) return;
+    const idx = WEEKS.length;
+    const start = curDates[0], end = curDates[curDates.length-1];
+    WEEKS.push({ dates: curDates.slice(), start, end,
+      label: '第'+(idx+1)+'周',
+      rangeText: start.slice(5).replace('-','/')+'~'+end.slice(5).replace('-','/') });
+    curDates.forEach(d=>dateToWeekIdx[d]=idx);
+  };
+  ds.forEach(d=>{
+    const dt = new Date(d+'T00:00:00');
+    const day = dt.getDay(); // 0=周日..6=周六
+    const back = (day===0)?6:(day-1);
+    const mon = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()-back);
+    const monStr = mon.getFullYear()+'-'+String(mon.getMonth()+1).padStart(2,'0')+'-'+String(mon.getDate()).padStart(2,'0');
+    if(curMonday===null){ curMonday=monStr; curDates=[d]; }
+    else if(monStr===curMonday){ curDates.push(d); }
+    else { pushWeek(); curMonday=monStr; curDates=[d]; }
+  });
+  pushWeek();
+}
 function initDateRange(){
+  buildWeeks();
   const opts = FILTER_OPTIONS.dates;
   const sSel = document.getElementById('dateStart');
   const eSel = document.getElementById('dateEnd');
@@ -1269,6 +1357,37 @@ function initDateRange(){
   sSel.innerHTML = html; eSel.innerHTML = html;
   sSel.value = opts[0]; eSel.value = opts[opts.length-1];
   filterState.date = new Set(opts); // 默认全区间
+  const wSel = document.getElementById('weekSel');
+  if(wSel){
+    wSel.innerHTML = WEEKS.map((w,i)=>'<option value="'+i+'">'+w.label+' ('+w.rangeText+')</option>').join('');
+    selectedWeekIdx = WEEKS.length-1; // 默认最新周
+    wSel.value = String(selectedWeekIdx);
+  }
+}
+function setDateMode(mode){
+  dateMode = mode;
+  document.querySelectorAll('.dm-btn').forEach(b=>b.classList.toggle('active', b.dataset.mode===mode));
+  const dayR = document.getElementById('dayRange');
+  const weekS = document.getElementById('weekSel');
+  if(mode==='week'){
+    if(dayR) dayR.style.display='none';
+    if(weekS) weekS.style.display='';
+    if(selectedWeekIdx<0) selectedWeekIdx = WEEKS.length-1;
+    if(weekS) weekS.value = String(selectedWeekIdx);
+    onWeekChange();
+  } else {
+    if(weekS) weekS.style.display='none';
+    if(dayR) dayR.style.display='';
+    onDateRangeChange(); // 恢复按日区间
+  }
+}
+function onWeekChange(){
+  const sel = document.getElementById('weekSel');
+  if(!sel) return;
+  selectedWeekIdx = parseInt(sel.value,10);
+  const w = WEEKS[selectedWeekIdx];
+  filterState.date = new Set(w.dates);
+  renderFilterSummary(); refresh();
 }
 function onDateRangeChange(){
   const sSel = document.getElementById('dateStart');
@@ -1322,6 +1441,11 @@ function resetAllFilters(){
   // 部门视角重置为默认「前端部门」（只影响部门分析模块的展示维度）
   deptView='frontend';
   document.querySelectorAll('.dept-toggle-btn').forEach(b=>b.classList.toggle('active', b.dataset.view==='frontend'));
+  // 日期模式重置为「按日」
+  dateMode='day';
+  document.querySelectorAll('.dm-btn').forEach(b=>b.classList.toggle('active', b.dataset.mode==='day'));
+  const dayR = document.getElementById('dayRange'); const weekS = document.getElementById('weekSel');
+  if(dayR) dayR.style.display=''; if(weekS) weekS.style.display='none';
   initDateRange();
   renderFilterSummary(); refresh();
 }
@@ -1331,6 +1455,12 @@ function renderFilterSummary(){
   for(const k of Object.keys(filterState)){
     if(!filterState[k].size) continue;
     if(k==='date'){
+      // 按周模式：显示所选周
+      if(dateMode==='week' && selectedWeekIdx>=0 && selectedWeekIdx<WEEKS.length){
+        const w = WEEKS[selectedWeekIdx];
+        chips.push('<span class="chip">日期: '+w.label+' ('+w.rangeText+')</span>');
+        continue;
+      }
       // 全区间（等于所有可选日期）视为未筛选，不显示 chip
       if(filterState.date.size === FILTER_OPTIONS.dates.length) continue;
       const arr = [...filterState.date].sort();
