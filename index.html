@@ -77,18 +77,118 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 .reset-btn:hover { background:#FEE2E2; }
 .filter-summary { margin-left:auto; display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:12px; color:#64748B; }
 .filter-summary .chip { background:#EEF2FF; color:#4A6CF7; padding:2px 10px; border-radius:12px; font-size:12px; }
-/* 日期跨度选择器 */
-.date-range { display:flex; align-items:center; gap:6px; }
-.date-sel { min-width:118px; padding:6px 8px; border:1px solid #E2E8F0; border-radius:6px; background:#fff; color:#475569; font-size:13px; cursor:pointer; }
-.date-sel:focus { border-color:#4A6CF7; outline:none; }
-.date-sel:hover { border-color:#4A6CF7; }
-.date-range .tilde { color:#94A3B8; font-size:13px; flex:0 0 auto; }
-/* 日期模式切换（按日/按周） */
-.date-mode-toggle { display:flex; align-items:center; border:1px solid #E2E8F0; border-radius:6px; overflow:hidden; flex:0 0 auto; }
-.date-mode-toggle .dm-btn { border:none; background:#fff; color:#64748B; font-size:12px; padding:6px 10px; cursor:pointer; }
-.date-mode-toggle .dm-btn.active { background:#4A6CF7; color:#fff; }
-.week-sel { min-width:170px; padding:6px 8px; border:1px solid #E2E8F0; border-radius:6px; background:#fff; color:#475569; font-size:13px; cursor:pointer; }
-.week-sel:focus, .week-sel:hover { border-color:#4A6CF7; outline:none; }
+/* ===== 日期筛选区（整体容器） ===== */
+.date-range-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  min-width: 280px;
+}
+.date-range-item > label {
+  font-size: 11px !important;
+  color: #64748B !important;
+  margin-bottom: 0 !important;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+/* 模式切换（按日/按周）—— 胶囊分段控制器 */
+.date-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: #E2E8F0;
+  border-radius: 8px;
+  padding: 3px;
+  gap: 0;
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
+.date-mode-toggle .dm-btn {
+  border: none;
+  background: transparent;
+  color: #64748B;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  cursor:pointer;
+  border-radius: 6px;
+  transition: all .2s ease;
+  position: relative;
+  z-index: 1;
+}
+.date-mode-toggle .dm-btn.active {
+  background: #fff;
+  color: #3949AB;
+  box-shadow: 0 1px 3px rgba(57,73,171,0.18);
+}
+/* 日期选择行 */
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.date-sel {
+  flex: 1;
+  min-width: 110px;
+  max-width: 140px;
+  padding: 7px 10px;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  background: #fff;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 500;
+  cursor:pointer;
+  transition: all .15s;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394A3B8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 26px;
+}
+.date-sel:focus {
+  border-color: #4A6CF7;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74,108,247,0.12);
+}
+.date-sel:hover {
+  border-color: #94A3B8;
+}
+.date-range .tilde {
+  color: #CBD5E1;
+  font-size: 13px;
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+/* 周选择 */
+.week-sel {
+  width: 100%;
+  min-width: 200px;
+  padding: 7px 10px;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  background: #fff;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 500;
+  cursor:pointer;
+  transition: all .15s;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394A3B8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 26px;
+}
+.week-sel:focus {
+  border-color: #4A6CF7;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74,108,247,0.12);
+}
 
 .dropdown { position:absolute; top:calc(100% + 4px); left:0; min-width:220px; max-height:300px; background:#fff; border:1px solid #E2E8F0; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.10); z-index:300; display:none; flex-direction:column; }
 .dropdown.open { display:flex; }
