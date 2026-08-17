@@ -1422,30 +1422,35 @@ function updateFilterBtn(btn, selected){
 }
 /* ===== 日期跨度选择 / 周选择 ===== */
 function buildWeeks(){
-  // 以「周一」为周起始，按数据实际存在的日期派生周列表（仅包含有数据的周）
+  // 周定义：第一周从固定锚点 2026-08-05 起算，每 7 天为一周（早于锚点的日期不纳入周划分）
   WEEKS = []; dateToWeekIdx = {};
   const ds = FILTER_OPTIONS.dates; // 已升序
-  let curMonday = null, curDates = [];
-  const pushWeek = ()=>{
-    if(!curDates.length) return;
-    const idx = WEEKS.length;
-    const start = curDates[0], end = curDates[curDates.length-1];
-    WEEKS.push({ dates: curDates.slice(), start, end,
-      label: '第'+(idx+1)+'周',
-      rangeText: start.slice(5).replace('-','/')+'~'+end.slice(5).replace('-','/') });
-    curDates.forEach(d=>dateToWeekIdx[d]=idx);
-  };
+  const ANCHOR = '2026-08-05';
+  const aDt = new Date(ANCHOR+'T00:00:00');
+  const DAY = 86400000;
+  const fmtMD = dt => (dt.getMonth()+1)+'/'+dt.getDate();
+  const buckets = {}; // idx -> [dates]
   ds.forEach(d=>{
     const dt = new Date(d+'T00:00:00');
-    const day = dt.getDay(); // 0=周日..6=周六
-    const back = (day===0)?6:(day-1);
-    const mon = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()-back);
-    const monStr = mon.getFullYear()+'-'+String(mon.getMonth()+1).padStart(2,'0')+'-'+String(mon.getDate()).padStart(2,'0');
-    if(curMonday===null){ curMonday=monStr; curDates=[d]; }
-    else if(monStr===curMonday){ curDates.push(d); }
-    else { pushWeek(); curMonday=monStr; curDates=[d]; }
+    const diff = Math.round((dt - aDt)/DAY);
+    if(diff < 0) return; // 早于锚点的日期（如 8/4）不纳入周划分
+    const idx = Math.floor(diff/7);
+    if(!buckets[idx]) buckets[idx] = [];
+    buckets[idx].push(d);
   });
-  pushWeek();
+  Object.keys(buckets).map(Number).sort((a,b)=>a-b).forEach(idx=>{
+    const cur = buckets[idx];
+    const cStart = new Date(aDt.getFullYear(), aDt.getMonth(), aDt.getDate() + idx*7);
+    const cEnd   = new Date(aDt.getFullYear(), aDt.getMonth(), aDt.getDate() + idx*7 + 6);
+    WEEKS.push({
+      dates: cur.slice(),
+      start: cur[0],
+      end: cur[cur.length-1],
+      label: '第'+(idx+1)+'周',
+      rangeText: fmtMD(cStart)+'~'+fmtMD(cEnd)
+    });
+    cur.forEach(d=>dateToWeekIdx[d]=WEEKS.length-1);
+  });
 }
 function initDateRange(){
   buildWeeks();
