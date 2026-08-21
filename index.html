@@ -895,7 +895,7 @@ function renderCustomerModule(data){
     // 收集该商户涉及的运营部门（按星币消耗降序，取 TOP 部门展示）
     const dm = groupBy(data.filter(r=>r.customer===k), r=>r.op_dept);
     const depts = [...dm.entries()].map(([dk,dv])=>({name:dk, coin:dv.coin})).sort((a,b)=>b.coin-a.coin).map(d=>d.name);
-    return {name:k, coin:v.coin, count:v.count, bosids:v.bosids.size, depts:depts};
+    return {name:k, coin:v.coin, count:v.count, wids:v.wids.size, depts:depts};
   }).sort((a,b)=>b.coin-a.coin).slice(0,15);
   const total = arr.reduce((s,a)=>s+a.coin,0);
   arr.forEach(c=>{
@@ -915,7 +915,7 @@ function renderCustomerModule(data){
       '<td class="num">'+Math.round(c.coin).toLocaleString()+'</td>'+
       '<td class="num">'+pct.toFixed(1)+'%</td>'+
       '<td class="num">'+c.count.toLocaleString()+'</td>'+
-      '<td class="num">'+c.bosids.toLocaleString()+'</td>'+
+      '<td class="num">'+c.wids.toLocaleString()+'</td>'+
       '<td style="min-width:210px;"><div class="tag-list">'+tags+'</div></td>'+
     '</tr>';
   }).join('');
