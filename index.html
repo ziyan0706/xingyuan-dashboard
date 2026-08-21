@@ -345,8 +345,8 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
   <!-- ========== KPI Cards ========== -->
   <div class="kpi-grid">
     <div class="kpi-card c1"><div class="kpi-label">星币消耗总量</div><div class="kpi-value" id="kpiCoin">0</div><div class="kpi-sub" id="kpiCoinSub">数据周期 --</div><div class="kpi-mom neutral" id="kpiCoinMoM">环比 —</div></div>
-    <div class="kpi-card c5"><div class="kpi-label">bosid数</div><div class="kpi-value" id="kpiBosids">0</div><div class="kpi-sub">Bosid去重</div></div>
-    <div class="kpi-card c4"><div class="kpi-label">单bosid消耗均值</div><div class="kpi-value" id="kpiAcctAvg">0</div><div class="kpi-sub">星币 / bosid</div><div class="kpi-mom neutral" id="kpiBosidMoM">环比 —</div></div>
+    <div class="kpi-card c5"><div class="kpi-label">账号数</div><div class="kpi-value" id="kpiBosids">0</div><div class="kpi-sub">账号去重</div></div>
+    <div class="kpi-card c4"><div class="kpi-label">单账号消耗均值</div><div class="kpi-value" id="kpiAcctAvg">0</div><div class="kpi-sub">星币 / 账号</div><div class="kpi-mom neutral" id="kpiBosidMoM">环比 —</div></div>
     <div class="kpi-card c8"><div class="kpi-label">高消耗bosid</div><div class="kpi-value" id="kpiHigh">0</div><div class="kpi-sub" id="kpiHighSub">≥1万星币</div></div>
     <div class="kpi-card c7"><div class="kpi-label">采纳率</div><div class="kpi-value" id="kpiAdoption">0<span style="font-size:16px;font-weight:400;color:#94A3B8;">%</span></div><div class="kpi-sub" id="kpiAdoptSub">0 次采纳 / 0 次</div></div>
     <div class="kpi-card c2"><div class="kpi-label">使用次数</div><div class="kpi-value" id="kpiCount">0</div><div class="kpi-sub">条请求记录</div></div>
@@ -388,10 +388,10 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
           <button class="dept-toggle-btn" data-view="backend" onclick="setDeptView('backend',this)">运营部门</button>
         </div>
       </div>
-      <div class="section-desc">按具体部门（而非部门大类）统计星币消耗、使用次数、单次消耗均值与覆盖 bosid 数。前端 / 运营为两种<b>视角</b>，请选择其一查看对应维度的下属部门。</div>
+      <div class="section-desc">按具体部门（而非部门大类）统计星币消耗、使用次数、单次消耗均值与覆盖账号数。前端 / 运营为两种<b>视角</b>，请选择其一查看对应维度的下属部门。</div>
       <div style="overflow-x:auto;">
         <table class="data-table" id="tblDept">
-          <thead><tr><th class="num">#</th><th>部门</th><th class="num">星币消耗</th><th class="num">占比</th><th class="num">使用次数</th><th class="num">单次消耗均值</th><th class="num">bosid数</th></tr></thead>
+          <thead><tr><th class="num">#</th><th>部门</th><th class="num">星币消耗</th><th class="num">占比</th><th class="num">使用次数</th><th class="num">单次消耗均值</th><th class="num">账号数</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -400,7 +400,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
     <!-- 消耗区间分布 (bosid维度) -->
     <div class="section">
       <div class="section-head"><h2 class="section-title">消耗区间分布</h2><span class="section-badge" id="intervalBadge"></span></div>
-      <div class="section-desc">以 bosid（企业账号）为统计维度，按单账号累计星币消耗量分组，反映高消耗账号的集中度。可切换「个数占比」（按 bosid 数量）与「用量占比」（按星币消耗）两种口径。</div>
+      <div class="section-desc">以账号为统计维度，按单账号累计星币消耗量分组，反映高消耗账号的集中度。可切换「个数占比」（按账号数量）与「用量占比」（按星币消耗）两种口径。</div>
       <div class="sub-tab-nav" id="intervalTabNav">
         <button class="sub-tab-btn active" data-mode="count" onclick="switchIntervalMode('count')">个数占比</button>
         <button class="sub-tab-btn" data-mode="coin" onclick="switchIntervalMode('coin')">用量占比</button>
@@ -414,7 +414,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
       <div class="section-desc">按商户维度统计星币消耗 TOP 15，含运营部门（取该商户消耗占比最高的部门），并列出每个商户消耗星币最多的三个功能（按星币消耗量降序）。</div>
       <div style="overflow-x:auto;">
         <table class="data-table" id="tblCustomer">
-          <thead><tr><th class="num">#</th><th>商户名称</th><th>运营部门</th><th class="num">星币消耗</th><th class="num">占比</th><th class="num">使用次数</th><th class="num">bosid数</th><th>消耗最多的三个功能</th></tr></thead>
+          <thead><tr><th class="num">#</th><th>商户名称</th><th>运营部门</th><th class="num">星币消耗</th><th class="num">占比</th><th class="num">使用次数</th><th class="num">账号数</th><th>消耗最多的三个功能</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -860,16 +860,16 @@ function renderIntervalModule(data){
   const names = buckets.map(b=>b[0]);
   const totalBosid = m.size;
   const totalCoin = coins.reduce((s,v)=>s+v,0);
-  document.getElementById('intervalBadge').textContent = '共 ' + totalBosid + ' 个 bosid · ' + Math.round(totalCoin).toLocaleString() + ' 星币';
+  document.getElementById('intervalBadge').textContent = '共 ' + totalBosid + ' 个账号 · ' + Math.round(totalCoin).toLocaleString() + ' 星币';
   const chart = ensureChart('chartInterval');
   if(intervalMode==='count'){
     const total = totalBosid || 1;
     chart.setOption({
       title:{text:'各区间 bosid 个数占比', left:'center', textStyle:{fontSize:14, color:'#334155'}},
-      tooltip:{trigger:'axis', axisPointer:{type:'shadow'}, formatter:function(p){ const i=p[0].dataIndex; const cntPct=total?counts[i]/total*100:0; const coinPct=totalCoin?coins[i]/totalCoin*100:0; return names[i]+'<br/>bosid数: '+counts[i]+' ('+cntPct.toFixed(1)+'%)<br/>累计星币: '+Math.round(coins[i]).toLocaleString()+' ('+coinPct.toFixed(1)+'%)'; }},
+      tooltip:{trigger:'axis', axisPointer:{type:'shadow'}, formatter:function(p){ const i=p[0].dataIndex; const cntPct=total?counts[i]/total*100:0; const coinPct=totalCoin?coins[i]/totalCoin*100:0; return names[i]+'<br/>账号数: '+counts[i]+' ('+cntPct.toFixed(1)+'%)<br/>累计星币: '+Math.round(coins[i]).toLocaleString()+' ('+coinPct.toFixed(1)+'%)'; }},
       grid:{left:60, right:80, top:50, bottom:50, containLabel:true},
       xAxis:{type:'category', data:names, name:'星币区间', axisLabel:{interval:0, fontSize:11}},
-      yAxis:{type:'value', name:'bosid数'},
+      yAxis:{type:'value', name:'账号数'},
       series:[{type:'bar', data:counts, barMaxWidth:44,
         itemStyle:{borderRadius:[6,6,0,0], color:new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#818cf8'},{offset:1,color:'#667eea'}])},
         label:{show:true, position:'top', formatter:function(p){ return counts[p.dataIndex]+' ('+(total?counts[p.dataIndex]/total*100:0).toFixed(1)+'%)'; }, fontSize:11, color:'#4A4A4A'}}]
@@ -878,7 +878,7 @@ function renderIntervalModule(data){
     const total = totalCoin || 1;
     chart.setOption({
       title:{text:'各区间星币用量占比', left:'center', textStyle:{fontSize:14, color:'#334155'}},
-      tooltip:{trigger:'axis', axisPointer:{type:'shadow'}, formatter:function(p){ const i=p[0].dataIndex; const coinPct=total?coins[i]/total*100:0; const cntPct=totalBosid?counts[i]/totalBosid*100:0; return names[i]+'<br/>累计星币: '+Math.round(coins[i]).toLocaleString()+' ('+coinPct.toFixed(1)+'%)<br/>bosid数: '+counts[i]+' ('+cntPct.toFixed(1)+'%)'; }},
+      tooltip:{trigger:'axis', axisPointer:{type:'shadow'}, formatter:function(p){ const i=p[0].dataIndex; const coinPct=total?coins[i]/total*100:0; const cntPct=totalBosid?counts[i]/totalBosid*100:0; return names[i]+'<br/>累计星币: '+Math.round(coins[i]).toLocaleString()+' ('+coinPct.toFixed(1)+'%)<br/>账号数: '+counts[i]+' ('+cntPct.toFixed(1)+'%)'; }},
       grid:{left:80, right:80, top:50, bottom:50, containLabel:true},
       xAxis:{type:'category', data:names, name:'星币区间', axisLabel:{interval:0, fontSize:11}},
       yAxis:{type:'value', name:'星币消耗'},
@@ -1096,13 +1096,13 @@ function renderOverviewInsights(data){
   items.push({
     tag: bosidLevel,
     tagLabel: bosidLevel==='warning'?'&#128202; 低活跃账户偏多':bosidLevel==='info'?'&#128202; 活跃度正常':'&#9989; 活跃度优秀',
-    body: '共 <b>'+totalBosid.toLocaleString()+'</b> 个 bosid，单bosid消耗均值 <b>'+Math.round(avgPerBosid).toLocaleString()+'</b> 星币。'+
+    body: '共 <b>'+totalBosid.toLocaleString()+'</b> 个账号，单账号消耗均值 <b>'+Math.round(avgPerBosid).toLocaleString()+'</b> 星币。'+
       '高消耗(≥1万) <b>'+highBosid.toLocaleString()+'</b> 个（'+highRatio.toFixed(1)+'%），低消耗(<500) <b>'+lowBosid.toLocaleString()+'</b> 个（'+lowRatio.toFixed(1)+'%）。'+
       ' TOP 5 bosid 消耗占比 <b>'+CR5B.toFixed(1)+'%</b>。'+
       (lowRatio>40?' 低消耗bosid占比较高，存在大量未激活或浅度使用账户。':
        lowRatio>20?' 存在一定比例低消耗bosid，有激活增长空间。':
        ' bosid整体活跃度优秀，账户健康度良好。'),
-    rec: lowRatio>40?'开展低活跃bosid专项激活计划：推送模板推荐、使用引导、功能培训；设定季度激活率目标 ≥30%。':
+    rec: lowRatio>40?'开展低活跃账号专项激活计划：推送模板推荐、使用引导、功能培训；设定季度激活率目标 ≥30%。':
         lowRatio>20?'针对低消耗bosid输出激活建议，按行业/部门分组推送最佳实践。':
         '持续监控高消耗bosid的使用效率，防范滥用或无效消耗。'
   });
@@ -1113,8 +1113,8 @@ function renderOverviewInsights(data){
   items.push({
     tag: deptLevel,
     tagLabel: deptLevel==='warning'?'&#127970; 部门效率差异大':'&#127970; 部门效率均衡',
-    body: '前端TOP部门 <b>'+topFeName+'</b>（'+topFePct.toFixed(1)+'%），单bosid均值 <b>'+Math.round(feAvgB).toLocaleString()+'</b>。'+
-      '运营TOP部门 <b>'+topOpName+'</b>（'+topOpPct.toFixed(1)+'%），单bosid均值 <b>'+Math.round(opAvgB).toLocaleString()+'</b>。'+
+    body: '前端TOP部门 <b>'+topFeName+'</b>（'+topFePct.toFixed(1)+'%），单账号均值 <b>'+Math.round(feAvgB).toLocaleString()+'</b>。'+
+      '运营TOP部门 <b>'+topOpName+'</b>（'+topOpPct.toFixed(1)+'%），单账号均值 <b>'+Math.round(opAvgB).toLocaleString()+'</b>。'+
       (deptGap>1000?' 前后端bosid活跃度差异显著（差值 '+Math.round(deptGap).toLocaleString()+'），需关注低效端的使用场景与功能匹配。':' 前后端bosid活跃度较为均衡，发展态势健康。'),
     rec: deptGap>1000?'对低效端开展专题分析：① 功能适配度评估 ② 使用频次与场景覆盖 ③ 商户培训与推广力度。目标缩小效率差距至 500 以内。':
         '保持两端均衡发展，按月度监控效率变化趋势，防止出现结构性分化。'
