@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 强制不缓存：每次进入都从服务器拉新 -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>星币消耗效果看板</title>
 <script>
 /*
@@ -61,6 +65,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 .report-header h1 { font-size:25px; font-weight:800; color:#fff; margin-bottom:6px; letter-spacing:0.5px; }
 .report-header .subtitle { font-size:14px; color:rgba(255,255,255,0.85); display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
 .date-badge { display:inline-block; background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.25); backdrop-filter:blur(6px); color:#fff; padding:3px 14px; border-radius:20px; font-size:13px; font-weight:500; }
+.update-time { color:#fff; font-size:14px; opacity:0.85; margin-top:8px; font-weight:500; }
 
 .container { max-width:1440px; margin:0 auto; padding:16px 24px 36px; }
 
@@ -319,7 +324,8 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 <div class="report-header">
   <div class="report-header-inner">
     <h1>星币消耗效果看板</h1>
-    <div class="subtitle"><span class="date-badge" id="dateBadge">数据截止: --</span><span class="date-badge">更新时间: 2026-08-26 20:36</span></div>
+    <div class="subtitle"><span class="date-badge" id="dateBadge">数据截止: --</span></div>
+    <div class="update-time">数据更新时间：2026-08-26 20:40</div>
     <!-- 【WIMO 数据说明 - 2026-08-25】当前研发提供的数据无法区分作图or视频，先记为作图/视频大类 -->
     <div style="margin-top:10px;padding:10px 14px;border-radius:8px;background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;font-size:13px;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,sans-serif;">&#9888; 当前研发提供的数据无法区分作图or视频，先记为作图/视频大类。</div>
   </div>
