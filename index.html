@@ -243,6 +243,9 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 .data-table .num { text-align:right; font-variant-numeric:tabular-nums; }
 .data-table .func-name { font-weight:600; color:#1E293B; }
 .data-table .func-biz { display:block; font-size:11px; color:#94A3B8; margin-top:1px; }
+.data-table .sort-btn { display:inline-block; margin-left:8px; padding:2px 8px; font-size:11px; line-height:1.4; color:#94A3B8; background:#fff; border:1px solid #E2E8F0; border-radius:4px; cursor:pointer; user-select:none; vertical-align:middle; transition:all .15s; font-weight:500; }
+.data-table .sort-btn:hover { color:#4F46E5; border-color:#C7D2FE; background:#EEF2FF; }
+.data-table .sort-btn.active { color:#fff; background:#4F46E5; border-color:#4F46E5; font-weight:600; }
 .bar-cell { width:150px; padding:9px 14px !important; }
 .bar-track { height:8px; background:#F1F5F9; border-radius:4px; overflow:hidden; }
 .bar-fill { height:100%; border-radius:4px; }
@@ -325,7 +328,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
   <div class="report-header-inner">
     <h1>星币消耗效果看板</h1>
     <div class="subtitle"><span class="date-badge" id="dateBadge">数据截止: --</span></div>
-    <div class="update-time">数据更新时间：2026-09-02 11:24</div>
+    <div class="update-time">数据更新时间：2026-09-02 13:06</div>
     <!-- 【WIMO 数据说明 - 2026-08-25】当前研发提供的数据无法区分作图or视频，先记为作图/视频大类 -->
     <div style="margin-top:10px;padding:10px 14px;border-radius:8px;background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;font-size:13px;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,sans-serif;">&#9888; 当前研发提供的数据无法区分作图or视频，先记为作图/视频大类。</div>
   </div>
@@ -461,7 +464,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
       <div class="section-desc">按星币消耗量降序排列的功能明细，含消耗占比、次数占比与单次消耗均值。</div>
       <div style="overflow-x:auto;">
         <table class="data-table" id="tblFuncDetail">
-          <thead><tr><th class="num">#</th><th>业务大类</th><th>功能分类</th><th class="num">星币消耗</th><th class="num">星币消耗占比</th><th class="num">使用次数</th><th class="num">次数占比</th><th class="num">单次消耗均值</th></tr></thead>
+          <thead><tr><th class="num">#</th><th>业务大类</th><th>功能分类</th><th class="num">星币消耗<span class="sort-btn active" data-sort="coin" onclick="setFuncSort('coin',this)" title="按星币消耗倒序">↓ 倒序</span></th><th class="num">星币消耗占比</th><th class="num">使用次数<span class="sort-btn" data-sort="count" onclick="setFuncSort('count',this)" title="按使用次数倒序">↓ 倒序</span></th><th class="num">次数占比</th><th class="num">单次消耗均值<span class="sort-btn" data-sort="avg" onclick="setFuncSort('avg',this)" title="按单次消耗均值倒序">↓ 倒序</span></th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -994,10 +997,33 @@ function renderBizPie(data){
   }).join('');
 }
 
+// 功能消耗明细表排序键（用户 2026-09-02 需求：星币消耗/使用次数/单次消耗均值 三列互斥倒序）
+let funcSortKey = 'coin';
+function setFuncSort(key, el){
+  funcSortKey = key;
+  document.querySelectorAll('#tblFuncDetail thead .sort-btn').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  // 重渲染功能 tab（保留当前筛选与日期模式）
+  if(typeof baseData === 'function') renderFunctionTab(baseData());
+}
 function renderFuncDetail(data){
   const fm = new Map();
   for(const r of data){ const f=r.func_cat; if(!f||f==='未知'||f==='') continue; if(!fm.has(f)) fm.set(f,{biz:r.biz_cat, coin:0, count:0}); const o=fm.get(f); o.coin+=r.coin; o.count++; }
-  const farr = [...fm.entries()].map(([k,v])=>({name:k, biz:v.biz, coin:v.coin, count:v.count})).sort((a,b)=>b.coin-a.coin);
+  const farr = [...fm.entries()].map(([k,v])=>({name:k, biz:v.biz, coin:v.coin, count:v.count}));
+  // 按当前排序键倒序；同键内按名称稳定排序，保证每次点击按钮顺序一致
+  farr.sort((a,b)=>{
+    let diff = 0;
+    if(funcSortKey==='count') diff = b.count - a.count;
+    else if(funcSortKey==='avg'){
+      const av = a.count ? a.coin/a.count : 0;
+      const bv = b.count ? b.coin/b.count : 0;
+      diff = bv - av;
+    } else {
+      diff = b.coin - a.coin;
+    }
+    if(diff !== 0) return diff;
+    return a.name.localeCompare(b.name, 'zh-CN');
+  });
   const total = data.reduce((s,r)=>s+r.coin,0);
   const totalCount = data.length;
   document.getElementById('funcBadge').textContent = farr.length + ' 个功能 · 共 ' + Math.round(total).toLocaleString() + ' 星币';
