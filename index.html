@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="zh-CN" data-page-node-id="0z5j4NBujffqT6zZvCUAaE">
+<head data-page-node-id="NY46T986KcWt7vf9iUrUWe">
+<meta charset="UTF-8" data-page-node-id="nRO213sLftQ88NzKHHbwWz">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="e6UAGSEhoddZ8YQ1GlLOQi">
 <!-- 强制不缓存：每次进入都从服务器拉新 -->
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" data-page-node-id="C3Cu1Am5ydw4rcVum6PNMw">
+<meta http-equiv="Pragma" content="no-cache" data-page-node-id="EJpiWFh4dyJcWrLzHXTNM7">
+<meta http-equiv="Expires" content="0" data-page-node-id="BOamOROFbbIPTLXt4IAeUQ">
 <title>星币消耗效果看板</title>
 <script>
 /*
@@ -270,12 +270,14 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 /* ===== 业务大类饼图 + 占比图例 ===== */
 .biz-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:24px; align-items:center; }
 .biz-chart { height:420px; }
-.biz-legend { display:flex; flex-direction:column; gap:12px; justify-content:center; }
-.biz-legend-item { display:flex; align-items:center; gap:12px; padding:6px 12px; border-radius:8px; background:#F8FAFC; }
-.biz-legend-item .dot { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
-.biz-legend-item .bn { flex:1; font-size:13px; font-weight:600; color:#334155; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.biz-legend-item .bp { font-size:16px; font-weight:700; color:#1E293B; min-width:72px; text-align:right; }
-.biz-legend-item .bc { font-size:11px; color:#94A3B8; min-width:96px; text-align:right; }
+.biz-legend { display:flex; flex-direction:column; gap:6px; justify-content:center; padding:4px 4px 4px 8px; }
+.biz-legend-item { display:grid; grid-template-columns:auto minmax(70px,1fr) 64px 64px 78px; align-items:center; gap:8px; padding:6px 10px; border-radius:8px; background:#F8FAFC; }
+.biz-legend-item .dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+.biz-legend-item .bn { font-size:12.5px; font-weight:600; color:#334155; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+.biz-legend-item .bp { font-size:14px; font-weight:700; color:#1E293B; min-width:64px; text-align:right; }
+.biz-legend-item .bc { font-size:10.5px; color:#94A3B8; min-width:78px; text-align:right; }
+.biz-bar-track { display:block; height:8px; background:#E2E8F0; border-radius:4px; overflow:hidden; min-width:0; }
+.biz-bar-fill { display:block; height:100%; border-radius:4px; transition:width .25s ease; }
 
 /* ===== 交叉分析（部门 / 解决方案） ===== */
 .cross-persp { display:inline-flex; background:#F1F5F9; border-radius:8px; padding:3px; margin:6px 0 12px; }
@@ -314,211 +316,212 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
 .insight-card .ic-ml { font-size:11px; color:#94A3B8; margin-top:2px; }
 .insight-card .ic-rec { margin-top:10px; padding:8px 12px; background:#F0FDF4; border-radius:6px; border-left:3px solid #10B981; font-size:12px; color:#065F46; line-height:1.6; }
 
+@media (max-width:1400px){ .biz-layout{grid-template-columns:1fr;} }
 @media (max-width:1200px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} .col-2{grid-template-columns:1fr;} .biz-layout{grid-template-columns:1fr;} }
 @media (max-width:768px){ .kpi-grid{grid-template-columns:1fr;} .filter-bar{flex-direction:column; align-items:stretch;} }
 </style>
 </head>
-<body>
-<div id="loading-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0f172a;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity 0.4s;">
-  <svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" stroke-width="4"/><circle cx="24" cy="24" r="20" fill="none" stroke="#6366f1" stroke-width="4" stroke-dasharray="100" stroke-dashoffset="40" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 24 24" to="360 24 24" dur="1.2s" repeatCount="indefinite"/></circle></svg>
-  <div style="color:#94a3b8;font-size:14px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;">数据加载中...</div>
+<body data-page-node-id="iwBa2ntLdleuYGtLItfayL">
+<div id="loading-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0f172a;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity 0.4s;" data-page-node-id="t9jRXttHubNJyDaxGzQqKe">
+  <svg width="48" height="48" viewBox="0 0 48 48" data-page-node-id="lqqdR4ykc4YBzDK3D5xrEx"><circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" stroke-width="4" data-page-node-id="e2q5iceBYNh6HEEnEHW2ZM"/><circle cx="24" cy="24" r="20" fill="none" stroke="#6366f1" stroke-width="4" stroke-dasharray="100" stroke-dashoffset="40" stroke-linecap="round" data-page-node-id="n0A6IJFYV8v2kbjrvThmsf"><animateTransform attributeName="transform" type="rotate" from="0 24 24" to="360 24 24" dur="1.2s" repeatCount="indefinite" data-page-node-id="HmNYERI9MFIyq0pIa2grct"/></circle></svg>
+  <div style="color:#94a3b8;font-size:14px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;" data-page-node-id="WNqMOY7y3llBPQJsFzMLEA">数据加载中...</div>
 </div>
 
-<div class="report-header">
-  <div class="report-header-inner">
-    <h1>星币消耗效果看板</h1>
-    <div class="subtitle"><span class="date-badge" id="dateBadge">数据截止: --</span></div>
-    <div class="update-time">数据更新时间：2026-09-03 20:08</div>
+<div class="report-header" data-page-node-id="1vTcotJHoMbHYSnsT2jwdg">
+  <div class="report-header-inner" data-page-node-id="4GxmSnWU2evEqZFX3Qrbpa">
+    <h1 data-page-node-id="EAcUmh4LYViRLlecsuENCf">星币消耗效果看板</h1>
+    <div class="subtitle" data-page-node-id="RN1ZAITXsIMiLEUGN3VDbu"><span class="date-badge" id="dateBadge" data-page-node-id="BubpTUjWtM8A0ndqzexfua">数据截止: --</span></div>
+    <div class="update-time" data-page-node-id="kr5khiJRIZ8uXlmoTeNRJA">数据更新时间：2026-09-03 20:29</div>
     <!-- 【WIMO 数据说明 - 2026-08-25】当前研发提供的wimo数据无法区分作图or视频，先记为作图/视频大类 -->
-    <div style="margin-top:10px;padding:10px 14px;border-radius:8px;background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;font-size:13px;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,sans-serif;">&#9888; 当前研发提供的wimo数据无法区分作图or视频，先记为作图/视频大类。</div>
+    <div style="margin-top:10px;padding:10px 14px;border-radius:8px;background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;font-size:13px;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,sans-serif;" data-page-node-id="LluiRkDVfH0PuuQOqGD191">&#9888; 当前研发提供的wimo数据无法区分作图or视频，先记为作图/视频大类。</div>
   </div>
 </div>
 
-<div class="container">
+<div class="container" data-page-node-id="jeG5E0U5l9U7ynnDV5toSY">
 
   <!-- ========== Filter Bar (sticky) ========== -->
-  <div class="filter-bar" id="filterBar">
-    <div class="filter-item date-range-item" data-filter="date"><label>日期</label><button type="button" class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDateDropdown(this)"><span class="val" id="dateBtnVal">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown date-dropdown"><div class="date-mode-toggle"><button type="button" class="dm-btn active" data-mode="day" onmousedown="event.preventDefault()" onclick="setDateMode('day')">按日</button><button type="button" class="dm-btn" data-mode="week" onmousedown="event.preventDefault()" onclick="setDateMode('week')">按周</button></div><div class="date-range" id="dayRange"><select class="date-sel" id="dateStart" onchange="onDateRangeChange()"></select><span class="tilde">~</span><select class="date-sel" id="dateEnd" onchange="onDateRangeChange()"></select></div><select class="week-sel" id="weekSel" style="display:none;" onchange="onWeekChange()"></select></div></div>
-    <div class="filter-item" data-filter="solution"><label>解决方案</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
-    <div class="filter-item" data-filter="sol_ver"><label>解决方案版本</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
-    <div class="filter-item" data-filter="fe_dept"><label>前端部门</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
-    <div class="filter-item" data-filter="op_dept"><label>运营部门</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
-    <div class="filter-item" data-filter="biz_cat"><label>业务大类</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
-    <div class="filter-item" data-filter="func_cat"><label>功能分类</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
-    <div class="filter-item" data-filter="industry1"><label>一级行业</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
-    <div class="filter-item" data-filter="industry2"><label>二级行业</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
-    <div class="filter-item" data-filter="bosid"><label>Bosid</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
-    <div class="filter-item" data-filter="customer"><label>商户名称</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)"><span class="val">全部</span><span class="arrow">&#9662;</span></button><div class="dropdown"><div class="dropdown-search"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)"></div><div class="dropdown-list"></div><div class="dropdown-actions"><a onclick="selectAll(this)">全选</a><a onclick="selectNone(this)">清空</a></div></div></div>
-    <div class="filter-actions"><div class="filter-summary" id="filterSummary"></div><button class="reset-btn" onmousedown="event.preventDefault()" onclick="resetAllFilters()">重置</button></div>
+  <div class="filter-bar" id="filterBar" data-page-node-id="hHFPgTDRjRdQbazhuMw88R">
+    <div class="filter-item date-range-item" data-filter="date" data-page-node-id="sTWmeT4BVnTVlwJAGPMuIL"><label data-page-node-id="JRuO57RkGV3GYqsINiqqHX">日期</label><button type="button" class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDateDropdown(this)" data-page-node-id="fiQLjU9q8lPjDeSW1m89KY"><span class="val" id="dateBtnVal" data-page-node-id="Oq4fF4t31BFg82KR1vCdWa">全部</span><span class="arrow" data-page-node-id="WU9v1AljypTOFiCwYfdnRx">&#9662;</span></button><div class="dropdown date-dropdown" data-page-node-id="JxQVA9AZsrwZDshVN60j79"><div class="date-mode-toggle" data-page-node-id="bPjCvpLG2o7FCv1r82QdwT"><button type="button" class="dm-btn active" data-mode="day" onmousedown="event.preventDefault()" onclick="setDateMode('day')" data-page-node-id="nwvPGQBTI4g1WbOg0BZ91z">按日</button><button type="button" class="dm-btn" data-mode="week" onmousedown="event.preventDefault()" onclick="setDateMode('week')" data-page-node-id="XRoHsU6CuqxDfvaMQz99Rt">按周</button></div><div class="date-range" id="dayRange" data-page-node-id="aSbQNZkWPP8NPeAOSiNidk"><select class="date-sel" id="dateStart" onchange="onDateRangeChange()" data-page-node-id="DcitPmQMfRDQQBV3UgX4CM"></select><span class="tilde" data-page-node-id="gsnVfwhcCavDKTLQSuBtr4">~</span><select class="date-sel" id="dateEnd" onchange="onDateRangeChange()" data-page-node-id="VCY3zaXTdD59QjDqeuBssM"></select></div><select class="week-sel" id="weekSel" style="display:none;" onchange="onWeekChange()" data-page-node-id="oCNE1sZjk5o0VHswh2BunA"></select></div></div>
+    <div class="filter-item" data-filter="solution" data-page-node-id="UMB4JbBfbl7aMDb5tFTjoI"><label data-page-node-id="6b5u56UgaIBEJ11yBTFEKX">解决方案</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)" data-page-node-id="PgcUEaC1xw9AiEWmiEpPDZ"><span class="val" data-page-node-id="57wCr0CW4QFFPPM0cetRBp">全部</span><span class="arrow" data-page-node-id="EnEq5Zbu6tm2GASBaJDVqH">&#9662;</span></button><div class="dropdown" data-page-node-id="MsmqxsHiMgXXs55vRzRdEb"><div class="dropdown-search" data-page-node-id="CYQstYHSgaLQKxdEGjenoe"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)" data-page-node-id="xHVIIATdTBvGI6gihQRNtF"></div><div class="dropdown-list" data-page-node-id="YtUtkjlKHOhSrLuEvZphWg"></div><div class="dropdown-actions" data-page-node-id="SxFQ5qRKNEj5oyJcKoCvtb"><a onclick="selectAll(this)" data-page-node-id="W7tuVrB04Fk0Huh6dVwMHc">全选</a><a onclick="selectNone(this)" data-page-node-id="ayjHYkJ03FUB5LTWfmWgPA">清空</a></div></div></div>
+    <div class="filter-item" data-filter="sol_ver" data-page-node-id="L5attxajatr8RHmDyHSz4u"><label data-page-node-id="l4l9RXYjiZav6SlrsDDcQb">解决方案版本</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)" data-page-node-id="xY3TdYJG3MKS9Ng6S1EsKA"><span class="val" data-page-node-id="AlOASgpPNJRkWdjai12ImK">全部</span><span class="arrow" data-page-node-id="a5XKv4d1n2T05B3fcBCdCR">&#9662;</span></button><div class="dropdown" data-page-node-id="lJYBAoYCuutBln4e7HihPS"><div class="dropdown-search" data-page-node-id="5sED6jjztUbdiJEPT7gyVq"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)" data-page-node-id="Mq5yyxdReBNGIxA3H4DHZ8"></div><div class="dropdown-list" data-page-node-id="RBKX6IR4LG9lzm3hW4Kgcy"></div><div class="dropdown-actions" data-page-node-id="ISVZIpWw0To6XFjtzJn6aI"><a onclick="selectAll(this)" data-page-node-id="SP4Kvt9k0OOgMS9R0WsfzG">全选</a><a onclick="selectNone(this)" data-page-node-id="TehZAUGCDGg7K1fSB95nVF">清空</a></div></div></div>
+    <div class="filter-item" data-filter="fe_dept" data-page-node-id="Vbf86zr4uN86764ECx2b4j"><label data-page-node-id="C6GVdJDan9Lls7oNSfEy2y">前端部门</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)" data-page-node-id="bqMOrKMLJman0sfD7O0z8D"><span class="val" data-page-node-id="Do1EFbd0HavnXKJyCr65l2">全部</span><span class="arrow" data-page-node-id="YnmP33GuBUhNaHlbBZNpiW">&#9662;</span></button><div class="dropdown" data-page-node-id="wjR27fFvAFZfiWvZSqgIdB"><div class="dropdown-search" data-page-node-id="mHPuPhvQpK4HAtfJF0xVi5"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)" data-page-node-id="xHplV0ajArOCLDhCgmTBno"></div><div class="dropdown-list" data-page-node-id="cCzprBUGrDZg2CoAepjVYi"></div><div class="dropdown-actions" data-page-node-id="RzDqtOoeI57mmsWLXEhcii"><a onclick="selectAll(this)" data-page-node-id="0uHmEZtBE2C143ukzE1t37">全选</a><a onclick="selectNone(this)" data-page-node-id="c6QrHoPknUHWHNlAfJafGx">清空</a></div></div></div>
+    <div class="filter-item" data-filter="op_dept" data-page-node-id="fxESg6nlDHwxbcNgbaS77o"><label data-page-node-id="alPt7IvSymvNZEG5m4RK5C">运营部门</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)" data-page-node-id="z2sxLSnc3FAoKsDp0jhiHd"><span class="val" data-page-node-id="U4LzunGR0g6D6tXvFfQn7l">全部</span><span class="arrow" data-page-node-id="bbPt9woqj95vvGx1C3EyaE">&#9662;</span></button><div class="dropdown" data-page-node-id="0PiLDlmFAYtZu92Ex91XqM"><div class="dropdown-search" data-page-node-id="hCWFVxDSCG1KKqOzZbPEz6"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)" data-page-node-id="kqCEwZHUbUWqr68azkHNZR"></div><div class="dropdown-list" data-page-node-id="1l7aKLDR2R8oyrTmwQtKxV"></div><div class="dropdown-actions" data-page-node-id="pgieQJAL8IXmWbi3MktgNA"><a onclick="selectAll(this)" data-page-node-id="HZ9uIh9VU83YLJCvmKHrEB">全选</a><a onclick="selectNone(this)" data-page-node-id="XFG45rguEfGvM4Ggt7vWcH">清空</a></div></div></div>
+    <div class="filter-item" data-filter="biz_cat" data-page-node-id="am8ciTDLCwLQGBuqAZOMe0"><label data-page-node-id="aB0v2107K3TeYM7IVyGJhi">业务大类</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)" data-page-node-id="cxF44iKpJV9U4jvxEfWruo"><span class="val" data-page-node-id="G0C3S0JEEp2267mWebGlXv">全部</span><span class="arrow" data-page-node-id="WF1dhGCdfxFEmeBCwiADOm">&#9662;</span></button><div class="dropdown" data-page-node-id="1NAtJk0hf6lo09RYmHU7QO"><div class="dropdown-search" data-page-node-id="pSjWbezJ9wyBpI1uAEO3mA"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)" data-page-node-id="zP8QZVcTxE2cm27jAUYtfx"></div><div class="dropdown-list" data-page-node-id="pEZAGcor3FndIO1is0CzTX"></div><div class="dropdown-actions" data-page-node-id="IvscXHUSH1BX1s9nZ3DLyR"><a onclick="selectAll(this)" data-page-node-id="zHcCWD0vQBxSW9L4k1qGno">全选</a><a onclick="selectNone(this)" data-page-node-id="ukTfVS8QajrkABKtNWLkbc">清空</a></div></div></div>
+    <div class="filter-item" data-filter="func_cat" data-page-node-id="6WISSSexU4BLbf5L5CMjM7"><label data-page-node-id="291LEqk0HSVzhltGgGbebl">功能分类</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)" data-page-node-id="Nqe8NK2P89KiYLfwzBMv24"><span class="val" data-page-node-id="jNiI7gvJSkh4W1c7dXjkMY">全部</span><span class="arrow" data-page-node-id="oLRysCfImZamPUIQW2EVy3">&#9662;</span></button><div class="dropdown" data-page-node-id="lBhgBOWT54STfBMnEXUi3S"><div class="dropdown-search" data-page-node-id="FGMRmSTnNcDjcSQiZpqh9V"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)" data-page-node-id="DT6mWzKD9QaEdEyUzPEEj8"></div><div class="dropdown-list" data-page-node-id="c0rmlw4WYt9aDclYs05zqI"></div><div class="dropdown-actions" data-page-node-id="VNuxjMeaj3tRlnKnozfDKH"><a onclick="selectAll(this)" data-page-node-id="LtV6o1H8mWqKZEd50iFGvO">全选</a><a onclick="selectNone(this)" data-page-node-id="jAEeEhjcrwdmpUd30uefXE">清空</a></div></div></div>
+    <div class="filter-item" data-filter="industry1" data-page-node-id="Be9SYTVpehFUol1WjwrUPK"><label data-page-node-id="VwbHkJNFBTjgLlzaEacbyv">一级行业</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)" data-page-node-id="43DexHoMhaMfnE8zQanEir"><span class="val" data-page-node-id="Fwga1VCSPR6JbitlVwWzcy">全部</span><span class="arrow" data-page-node-id="v1wnxA980WhSarD0FwIRS0">&#9662;</span></button><div class="dropdown" data-page-node-id="Y9IX0pDyBL7XsPIxHT8UWo"><div class="dropdown-search" data-page-node-id="HPsfcZedkG5A4rchqFJHzM"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)" data-page-node-id="qynpAvwl25jjatFeFLnQGR"></div><div class="dropdown-list" data-page-node-id="Maxh6jpgUm2d1YzIU5kYzg"></div><div class="dropdown-actions" data-page-node-id="meEcNz7Sqg2kRnoHnc647M"><a onclick="selectAll(this)" data-page-node-id="R6oomGiEOSi6QuSSwndnOo">全选</a><a onclick="selectNone(this)" data-page-node-id="X5QrrRC8QJehfHVSt2Q0pY">清空</a></div></div></div>
+    <div class="filter-item" data-filter="industry2" data-page-node-id="wMXacBLyNv6Zw1eZE2OdZp"><label data-page-node-id="hZcH9EJyKWk7i4Epg55cBs">二级行业</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)" data-page-node-id="ejAwQsb25jCxXh1G00Ar9l"><span class="val" data-page-node-id="3ykZkvwstXsT43IxG6CAVl">全部</span><span class="arrow" data-page-node-id="6jJbLd7l6lOqnUOZf0x6CM">&#9662;</span></button><div class="dropdown" data-page-node-id="PC8W6DDO3IDoQ8QxFv6bHE"><div class="dropdown-search" data-page-node-id="OoIDY5ez7gC13XOqgQveCn"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)" data-page-node-id="OdLpbCp1CVyTxqOKjlXBnR"></div><div class="dropdown-list" data-page-node-id="AxZcv6OuZpyFHULAibo5cW"></div><div class="dropdown-actions" data-page-node-id="3YqzIg3tUTwCFX77UHbfAB"><a onclick="selectAll(this)" data-page-node-id="cvuwd01DuWdJGDKkEBGDTt">全选</a><a onclick="selectNone(this)" data-page-node-id="RLwfH2WxiZpZsU34nvp925">清空</a></div></div></div>
+    <div class="filter-item" data-filter="bosid" data-page-node-id="WU8YzqKM6NTJrjl16xWuqt"><label data-page-node-id="mXK6jomGg8d740MLiHsCdN">Bosid</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)" data-page-node-id="GEzQk7DuNnYMsWrme2Qgln"><span class="val" data-page-node-id="zTeH1rbK2d6i5yYXHJIwKF">全部</span><span class="arrow" data-page-node-id="h5d4cOh3wPFfXW0xZebEl1">&#9662;</span></button><div class="dropdown" data-page-node-id="SUyBBdYN8L4RKw1LU8DTQw"><div class="dropdown-search" data-page-node-id="WGL9TbkjwtfKZT9zakgV5h"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)" data-page-node-id="W37QJWw9vkDJnEzjpHsIPb"></div><div class="dropdown-list" data-page-node-id="xRoQmDklWGvadayzwz3qXy"></div><div class="dropdown-actions" data-page-node-id="SzFHIk2kqZfQ81dx5kmdQb"><a onclick="selectAll(this)" data-page-node-id="kyg0Zrf6ve43EI7PhWs9uC">全选</a><a onclick="selectNone(this)" data-page-node-id="VCvx7vhFDdIU1WdEd7mIVQ">清空</a></div></div></div>
+    <div class="filter-item" data-filter="customer" data-page-node-id="qFjkBKPha0Me9PP8lwjx48"><label data-page-node-id="CzvFfhZ21IC8fy9pXv6BHu">商户名称</label><button class="filter-btn" onmousedown="event.preventDefault()" onclick="toggleDropdown(this)" data-page-node-id="Gz3sc70RaLIAEhhBSw6Fzt"><span class="val" data-page-node-id="clnTpAdzkbH1XshdLCBd5G">全部</span><span class="arrow" data-page-node-id="Mqdq3GVEPeXu5Yumu0edgP">&#9662;</span></button><div class="dropdown" data-page-node-id="HV13d3Snp7DGuYOJs5cNZg"><div class="dropdown-search" data-page-node-id="PQO1tDm0Bof4SjOPFdqBgS"><input type="text" placeholder="搜索..." oninput="filterDropdownItems(this)" data-page-node-id="6Sh1E0BbHgG1GKXhoKCBcC"></div><div class="dropdown-list" data-page-node-id="TDrBfchNTAacwygcorqjoJ"></div><div class="dropdown-actions" data-page-node-id="jh2Sw9PCw4pCkGD2hJaws1"><a onclick="selectAll(this)" data-page-node-id="6Xv09o3n6p8RNYAB1YQtpx">全选</a><a onclick="selectNone(this)" data-page-node-id="ALScbvpN8uAy2lGb6Wwvox">清空</a></div></div></div>
+    <div class="filter-actions" data-page-node-id="wFWzM68LvgRbag5F8gabTb"><div class="filter-summary" id="filterSummary" data-page-node-id="zt336gUFCf4END4uBxarlQ"></div><button class="reset-btn" onmousedown="event.preventDefault()" onclick="resetAllFilters()" data-page-node-id="uv3UCYWbLxF60aXmFewx9E">重置</button></div>
   </div>
 
   <!-- ========== KPI Cards ========== -->
-  <div class="kpi-grid">
-    <div class="kpi-card c1"><div class="kpi-label">星币消耗总量</div><div class="kpi-value" id="kpiCoin">0</div><div class="kpi-sub" id="kpiCoinSub">数据周期 --</div><div class="kpi-mom neutral" id="kpiCoinMoM">环比 —</div></div>
-    <div class="kpi-card c5"><div class="kpi-label">账号数</div><div class="kpi-value" id="kpiBosids">0</div><div class="kpi-sub">账号去重</div></div>
-    <div class="kpi-card c4"><div class="kpi-label">单账号消耗均值</div><div class="kpi-value" id="kpiAcctAvg">0</div><div class="kpi-sub">星币 / 账号</div><div class="kpi-mom neutral" id="kpiBosidMoM">环比 —</div></div>
-    <div class="kpi-card c8"><div class="kpi-label">高消耗账号</div><div class="kpi-value" id="kpiHigh">0</div><div class="kpi-sub" id="kpiHighSub">≥1万星币</div></div>
-    <div class="kpi-card c7"><div class="kpi-label">采纳率</div><div class="kpi-value" id="kpiAdoption">0<span style="font-size:16px;font-weight:400;color:#94A3B8;">%</span></div><div class="kpi-sub" id="kpiAdoptSub">0 次采纳 / 0 次</div></div>
-    <div class="kpi-card c2"><div class="kpi-label">使用次数</div><div class="kpi-value" id="kpiCount">0</div><div class="kpi-sub">条请求记录</div></div>
-    <div class="kpi-card c3"><div class="kpi-label">单次消耗均值</div><div class="kpi-value" id="kpiAvg">0</div><div class="kpi-sub">星币 / 次</div></div>
-    <div class="kpi-card c6"><div class="kpi-label">使用子账号数</div><div class="kpi-value" id="kpiWids">0</div><div class="kpi-sub">wid去重</div><div class="kpi-mom neutral" id="kpiWidMoM">环比 —</div></div>
+  <div class="kpi-grid" data-page-node-id="5D6LlngMlZTV0RRYTkhkDp">
+    <div class="kpi-card c1" data-page-node-id="LP5YMZ9oVtgMXT4DlbkXAF"><div class="kpi-label" data-page-node-id="srZr4L4NdAFrqz7ZN53pzB">星币消耗总量</div><div class="kpi-value" id="kpiCoin" data-page-node-id="iHyD8evTsYtqqRRA6usdDm">0</div><div class="kpi-sub" id="kpiCoinSub" data-page-node-id="KQPZmRioP9pWQaJUWqdnyv">数据周期 --</div><div class="kpi-mom neutral" id="kpiCoinMoM" data-page-node-id="pPgtR3czVNZBnUyROlD2rk">环比 —</div></div>
+    <div class="kpi-card c5" data-page-node-id="zHzLlyWwROsLJh8nKEhszC"><div class="kpi-label" data-page-node-id="D9wdRa3hJoLlPKTtZUXhMI">账号数</div><div class="kpi-value" id="kpiBosids" data-page-node-id="TST45nZ6rIZw3d17MMFaqs">0</div><div class="kpi-sub" data-page-node-id="Dmpm7aJl8QKxuw5Qd9xymu">账号去重</div></div>
+    <div class="kpi-card c4" data-page-node-id="emWZagnEQBKYE9cm87KSAb"><div class="kpi-label" data-page-node-id="81tJkucI6qEdXK7nnS1nEO">单账号消耗均值</div><div class="kpi-value" id="kpiAcctAvg" data-page-node-id="UhJgEQzp8EI5N6JN8b9reP">0</div><div class="kpi-sub" data-page-node-id="HinIfPxtRVATt8KVkuzb3l">星币 / 账号</div><div class="kpi-mom neutral" id="kpiBosidMoM" data-page-node-id="oiwCFSAzIEisoibx0JCwei">环比 —</div></div>
+    <div class="kpi-card c8" data-page-node-id="ST10bKsxIXDns5UbvgvQ31"><div class="kpi-label" data-page-node-id="UsFsAgCsyhuwCLDV8LiVul">高消耗账号</div><div class="kpi-value" id="kpiHigh" data-page-node-id="BvsddDpIGXiowMLCXRRSAb">0</div><div class="kpi-sub" id="kpiHighSub" data-page-node-id="zZ312yO00FTsFSPVlLz9Lq">≥1万星币</div></div>
+    <div class="kpi-card c7" data-page-node-id="J6CgzfkMtmP77aBx0EWsQE"><div class="kpi-label" data-page-node-id="VpoAsE6e226dNKwRI2F8EU">采纳率</div><div class="kpi-value" id="kpiAdoption" data-page-node-id="riOxGPQKG7lbUYFvLuGxAq">0<span style="font-size:16px;font-weight:400;color:#94A3B8;" data-page-node-id="ZMFIfjMLvlHSfhPkypDptY">%</span></div><div class="kpi-sub" id="kpiAdoptSub" data-page-node-id="o7zdKtjgsLhreyXHKbYtoE">0 次采纳 / 0 次</div></div>
+    <div class="kpi-card c2" data-page-node-id="ECGOjd87V51cCM0pmUBsT7"><div class="kpi-label" data-page-node-id="OV62U88tRdA7IIMN4qRETm">使用次数</div><div class="kpi-value" id="kpiCount" data-page-node-id="ro2jMUGBYFMaHHmm3kgrRa">0</div><div class="kpi-sub" data-page-node-id="VZg1MuU6w4eTqO3WxhCH7F">条请求记录</div></div>
+    <div class="kpi-card c3" data-page-node-id="GNwE13d9v77hl6UW8kaLYg"><div class="kpi-label" data-page-node-id="G56Ag6e6lmqGWZnrkamhan">单次消耗均值</div><div class="kpi-value" id="kpiAvg" data-page-node-id="ftLRKd6PRN6w90W1yXwb9P">0</div><div class="kpi-sub" data-page-node-id="rsZqRg4gJqYrc7D8snTeIz">星币 / 次</div></div>
+    <div class="kpi-card c6" data-page-node-id="HS98M5eRMGnsyX4VcEGu0W"><div class="kpi-label" data-page-node-id="zpupt7PHUwWeZSkeptpVpF">使用子账号数</div><div class="kpi-value" id="kpiWids" data-page-node-id="F9uLHMAJBORCBYcUTUowkL">0</div><div class="kpi-sub" data-page-node-id="0E7zpXAplBCNH95b09wW2e">wid去重</div><div class="kpi-mom neutral" id="kpiWidMoM" data-page-node-id="hVrIcuIo2v8xpLD59lp1Ap">环比 —</div></div>
   </div>
 
   <!-- 星币消耗日趋势 -->
-  <div class="daily-trend-wrap">
-    <div class="trend-title" id="trendTitle">星币消耗日趋势</div>
-    <div class="trend-chart" id="dailyTrendChart"></div>
+  <div class="daily-trend-wrap" data-page-node-id="4gtx22RZ4GbHW0CGUp3ASh">
+    <div class="trend-title" id="trendTitle" data-page-node-id="Z9AVHzkS1OLh32VMLpNABT">星币消耗日趋势</div>
+    <div class="trend-chart" id="dailyTrendChart" data-page-node-id="qzPA39PQXTdzY6PjiigjAt"></div>
   </div>
 
   <!-- ========== Tabs ========== -->
-  <div class="tab-nav">
-    <button class="main-tab-btn active" data-tab="overview" onclick="switchTab('overview')">消耗概览</button>
-    <button class="main-tab-btn" data-tab="function" onclick="switchTab('function')">功能消耗分析</button>
+  <div class="tab-nav" data-page-node-id="9KJnbD8i0pnX1pCBI70naF">
+    <button class="main-tab-btn active" data-tab="overview" onclick="switchTab('overview')" data-page-node-id="j4G99Ac36jCMhfA5QMYA3T">消耗概览</button>
+    <button class="main-tab-btn" data-tab="function" onclick="switchTab('function')" data-page-node-id="x29Ge5FHhk3aU5FEdtAaxm">功能消耗分析</button>
   </div>
 
   <!-- ========== Overview Tab ========== -->
-  <div class="tab-panel" id="tab-overview">
+  <div class="tab-panel" id="tab-overview" data-page-node-id="KQFf3MtniEj0uxTF7ywgqG">
 
     <!-- 解决方案分布 -->
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">解决方案分布</h2><span class="section-badge" id="solBadge"></span></div>
-      <div class="section-desc">按解决方案维度统计各方案的星币消耗总量及占比。可通过下方筛选框选择具体解决方案或版本，分布图将随之变化。</div>
-      <div class="module-filter">
-        <label>解决方案</label><select id="solModuleSol" onchange="onSolChange()"></select>
-        <label>版本</label><select id="solModuleVer" onchange="onVerChange()"></select>
+    <div class="section" data-page-node-id="2X3Ij4CLogw6cPS2gYOFCX">
+      <div class="section-head" data-page-node-id="ETXQ1UXxYMNPxpnOlXKwYq"><h2 class="section-title" data-page-node-id="XaXLHaqNSLf37eBVqm2Lyi">解决方案分布</h2><span class="section-badge" id="solBadge" data-page-node-id="pHZa5a4lszDO0UcJqMNW7e"></span></div>
+      <div class="section-desc" data-page-node-id="gGEwuJ2VsJDlqLytmSzl8D">按解决方案维度统计各方案的星币消耗总量及占比。可通过下方筛选框选择具体解决方案或版本，分布图将随之变化。</div>
+      <div class="module-filter" data-page-node-id="cuUivw62rzt9GMWaFEA2Zz">
+        <label data-page-node-id="bxlxDgAZTEJdc0N7CBicVW">解决方案</label><select id="solModuleSol" onchange="onSolChange()" data-page-node-id="R2SU9pSIJteiHJ9mJhNOCK"></select>
+        <label data-page-node-id="SRW7yM8Yl4AIRXBvsSuFbv">版本</label><select id="solModuleVer" onchange="onVerChange()" data-page-node-id="64APQYmvonNErAEPAL08z5"></select>
       </div>
-      <div id="chartSolution" class="chart-container"></div>
+      <div id="chartSolution" class="chart-container" data-page-node-id="JOu9c1MXI0SFvSgDgOpiXJ"></div>
     </div>
 
     <!-- 部门消耗分析 -->
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">部门消耗分析</h2><span class="section-badge" id="deptBadge"></span>
-        <div class="dept-toggle">
-          <button class="dept-toggle-btn active" data-view="frontend" onclick="setDeptView('frontend',this)">前端部门</button>
-          <button class="dept-toggle-btn" data-view="backend" onclick="setDeptView('backend',this)">运营部门</button>
+    <div class="section" data-page-node-id="x0hQFt8JAd4NtzJfNHJCB6">
+      <div class="section-head" data-page-node-id="BxL8lfEwf22AukFrY9noK1"><h2 class="section-title" data-page-node-id="Wq5PBS94XScEkYqYDrG2bw">部门消耗分析</h2><span class="section-badge" id="deptBadge" data-page-node-id="eBzYHBIjDBWa5Uux5EyaL5"></span>
+        <div class="dept-toggle" data-page-node-id="N2UJXXPp5e2F5VfsyTagOi">
+          <button class="dept-toggle-btn active" data-view="frontend" onclick="setDeptView('frontend',this)" data-page-node-id="5vKbXwk4wiFd0tKPHkMcvF">前端部门</button>
+          <button class="dept-toggle-btn" data-view="backend" onclick="setDeptView('backend',this)" data-page-node-id="uaYaqjSHWokNmtc9bVnYAl">运营部门</button>
         </div>
       </div>
-      <div class="section-desc">按具体部门（而非部门大类）统计星币消耗、使用次数、单次消耗均值与覆盖账号数。前端 / 运营为两种<b>视角</b>，请选择其一查看对应维度的下属部门。</div>
-      <div style="overflow-x:auto;">
-        <table class="data-table" id="tblDept">
-          <thead><tr><th class="num">#</th><th>部门</th><th class="num">星币消耗</th><th class="num">占比</th><th class="num">使用次数</th><th class="num">单次消耗均值</th><th class="num">账号数</th></tr></thead>
-          <tbody></tbody>
+      <div class="section-desc" data-page-node-id="X7qBrXecCoeMVpaN0kGdES">按具体部门（而非部门大类）统计星币消耗、使用次数、单次消耗均值与覆盖账号数。前端 / 运营为两种<b data-page-node-id="Y9XsCtZGJDNAnpR4clts9C">视角</b>，请选择其一查看对应维度的下属部门。</div>
+      <div style="overflow-x:auto;" data-page-node-id="vpiZTlfptJY4tu1m1IwmBw">
+        <table class="data-table" id="tblDept" data-page-node-id="OkusCz6pBTc4I7Pe6WEG9b">
+          <thead data-page-node-id="fL6e3cuVtFG8djveXs7TVY"><tr data-page-node-id="mPtF1rPSUFkbQgPGdqGOFA"><th class="num" data-page-node-id="alPgZcHIuVsNBU2FzPSQSb">#</th><th data-page-node-id="hH0y1zHurc6eAVPJQswMiu">部门</th><th class="num" data-page-node-id="wEr77GmRFXuBBaiFSECgSu">星币消耗</th><th class="num" data-page-node-id="fTfLai7WB66vErafDBszCH">占比</th><th class="num" data-page-node-id="a4Uz1wu4RTnlxogdgXhWtg">使用次数</th><th class="num" data-page-node-id="QemgNpkEBHFXCJfpdTxkYG">单次消耗均值</th><th class="num" data-page-node-id="8wNCriI1e0ICSEsVeiBDJZ">账号数</th></tr></thead>
+          <tbody data-page-node-id="9PLVVq9sCFcqpH4YuKdBJF"></tbody>
         </table>
       </div>
     </div>
 
     <!-- 消耗区间分布 (bosid维度) -->
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">消耗区间分布</h2><span class="section-badge" id="intervalBadge"></span></div>
-      <div class="section-desc">以账号为统计维度，按单账号累计星币消耗量分组，反映高消耗账号的集中度。可切换「个数占比」（按账号数量）与「用量占比」（按星币消耗）两种口径。</div>
-      <div class="sub-tab-nav" id="intervalTabNav">
-        <button class="sub-tab-btn active" data-mode="count" onclick="switchIntervalMode('count')">个数占比</button>
-        <button class="sub-tab-btn" data-mode="coin" onclick="switchIntervalMode('coin')">用量占比</button>
+    <div class="section" data-page-node-id="tnbuP0uLzsbhhhtnQNGhef">
+      <div class="section-head" data-page-node-id="tgBSzGlM9mFQwUFSsNXvWU"><h2 class="section-title" data-page-node-id="vEjP4SmMxdzFz1R5tOlvkT">消耗区间分布</h2><span class="section-badge" id="intervalBadge" data-page-node-id="aarJhIQDU06rBM13kAUT3C"></span></div>
+      <div class="section-desc" data-page-node-id="EQdmBAYl4fFHmHYb36xQm4">以账号为统计维度，按单账号累计星币消耗量分组，反映高消耗账号的集中度。可切换「个数占比」（按账号数量）与「用量占比」（按星币消耗）两种口径。</div>
+      <div class="sub-tab-nav" id="intervalTabNav" data-page-node-id="cUF29WRrEolbA0CRCwEJXN">
+        <button class="sub-tab-btn active" data-mode="count" onclick="switchIntervalMode('count')" data-page-node-id="9uq2nIRslx0wLZv0xz0hDC">个数占比</button>
+        <button class="sub-tab-btn" data-mode="coin" onclick="switchIntervalMode('coin')" data-page-node-id="mU6Yrrobma7ibTvaJQes0G">用量占比</button>
       </div>
-      <div id="chartInterval" class="chart-container"></div>
+      <div id="chartInterval" class="chart-container" data-page-node-id="2duTtqQvXtzX5ydql3UZts"></div>
     </div>
 
     <!-- 商户消耗分析 -->
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">商户消耗分析</h2><span class="section-badge" id="custBadge"></span></div>
-      <div class="section-desc">按商户维度统计星币消耗 TOP 15，含运营部门（取该商户消耗占比最高的部门），并列出每个商户消耗星币最多的三个功能（按星币消耗量降序）。</div>
-      <div style="overflow-x:auto;">
-        <table class="data-table" id="tblCustomer">
-          <thead><tr><th class="num">#</th><th>商户名称</th><th>运营部门</th><th class="num">星币消耗</th><th class="num">占比</th><th class="num">使用次数</th><th class="num">子账号数</th><th>消耗最多的三个功能</th></tr></thead>
-          <tbody></tbody>
+    <div class="section" data-page-node-id="zaNaOtbtAkBDOnsfnt2gwn">
+      <div class="section-head" data-page-node-id="JkQfvFiIYIacAbZQO4bOOn"><h2 class="section-title" data-page-node-id="6xPMkNtUAVMR3KS7gPBDjD">商户消耗分析</h2><span class="section-badge" id="custBadge" data-page-node-id="9U7AtLDX8GRwwZz2hTrBC8"></span></div>
+      <div class="section-desc" data-page-node-id="iOYjOYcyYEZLDidUWuKnxM">按商户维度统计星币消耗 TOP 15，含运营部门（取该商户消耗占比最高的部门），并列出每个商户消耗星币最多的三个功能（按星币消耗量降序）。</div>
+      <div style="overflow-x:auto;" data-page-node-id="roOOCyHzltzQTkB7mxXfeJ">
+        <table class="data-table" id="tblCustomer" data-page-node-id="Fw3t8Sl66DYlxoQOGLItgV">
+          <thead data-page-node-id="6hG0TsLe590mGivh9QqtcI"><tr data-page-node-id="ui7M7C4rXIVz7NKSiLyfEt"><th class="num" data-page-node-id="6oh0GdjAOOHeFuojKf1Ri5">#</th><th data-page-node-id="FWkpXmUIoFTu34me9EdWev">商户名称</th><th data-page-node-id="I9BCGqAjm7ODAgCjY0xfG6">运营部门</th><th class="num" data-page-node-id="O9ljPNDf64lLIx1LS8TQC6">星币消耗</th><th class="num" data-page-node-id="hUsFOjaSsbj0HZ3hLVxzbj">占比</th><th class="num" data-page-node-id="ZqTAN8V4iQABNDqlliDeAV">使用次数</th><th class="num" data-page-node-id="RNaYcAPrSNOU5i2fGwOZOW">子账号数</th><th data-page-node-id="5uB4m3vCX9Q1Yn7Vv0FOq8">消耗最多的三个功能</th></tr></thead>
+          <tbody data-page-node-id="RRz6NtwwRZ2Yb1AkfHE4fd"></tbody>
         </table>
       </div>
     </div>
 
     <!-- 行业分析 -->
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">行业分析</h2><span class="section-badge" id="industryBadge"></span></div>
-      <div class="section-desc">按一级行业与二级行业维度统计星币消耗及占比，识别主要消耗行业（一级行业为饼图，二级行业取消耗 TOP 12 横向条形图）。</div>
-      <div class="col-2">
-        <div class="card"><div class="card-header"><h3>一级行业分布</h3></div><div id="chartIndustry1" class="chart-container sm"></div></div>
-        <div class="card"><div class="card-header"><h3>二级行业 TOP 12</h3></div><div id="chartIndustry2" class="chart-container sm"></div></div>
+    <div class="section" data-page-node-id="tAR0a31X3OXlbCIcnCX8dR">
+      <div class="section-head" data-page-node-id="wsoDPIxJid0bwlIAXTDEtP"><h2 class="section-title" data-page-node-id="0RXRRCGt1BqiZFN3n0o3pn">行业分析</h2><span class="section-badge" id="industryBadge" data-page-node-id="y6fS4N6hQxQukgAZmADKcv"></span></div>
+      <div class="section-desc" data-page-node-id="zukOBfFy48VCib2GWxQoUz">按一级行业与二级行业维度统计星币消耗及占比，识别主要消耗行业（一级行业为饼图，二级行业取消耗 TOP 12 横向条形图）。</div>
+      <div class="col-2" data-page-node-id="4H7Kz7lobQTetRrtRnoVsv">
+        <div class="card" data-page-node-id="RHUYklcMzxGzKdJNipsRta"><div class="card-header" data-page-node-id="owqLtO6DcqFhBowmWOa4bf"><h3 data-page-node-id="CQ0oLKDujSzSPOFAxPkhEL">一级行业分布</h3></div><div id="chartIndustry1" class="chart-container sm" data-page-node-id="l6GLGGwewJcHUv1udHZCYK"></div></div>
+        <div class="card" data-page-node-id="oQOXdRLIC6HARcuZtbxBC5"><div class="card-header" data-page-node-id="oZmDx8iCaCxSHyTF5dXxQi"><h3 data-page-node-id="kCIz63mqPl6QgEfLuLBH6e">二级行业 TOP 12</h3></div><div id="chartIndustry2" class="chart-container sm" data-page-node-id="SHaSSaQcPnV0ZnD3J68VFX"></div></div>
       </div>
     </div>
 
     <!-- 请求层面分析 -->
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">请求层面分析</h2></div>
-      <div class="section-desc">从请求来源与请求时段两个维度，分析使用行为的时间分布与渠道分布。</div>
-      <div class="col-2">
-        <div class="card"><div class="card-header"><h3>请求来源分布</h3></div><div id="chartSource" class="chart-container sm"></div></div>
-        <div class="card"><div class="card-header"><h3>请求时段分布（按小时）</h3></div><div id="chartHour" class="chart-container sm"></div></div>
+    <div class="section" data-page-node-id="5BQR0pM5GqR6xHi1LWSghK">
+      <div class="section-head" data-page-node-id="ObG5duKso4X9NmJ9w6Z1fx"><h2 class="section-title" data-page-node-id="fwWTgIzsgKPf41UYaQNvGe">请求层面分析</h2></div>
+      <div class="section-desc" data-page-node-id="sPFg0ixIxPUvWEBtea0ELC">从请求来源与请求时段两个维度，分析使用行为的时间分布与渠道分布。</div>
+      <div class="col-2" data-page-node-id="aAkVQDnOIzpNIzfmHddKuN">
+        <div class="card" data-page-node-id="bAdI2EtcVsAKJnvGSB0XNf"><div class="card-header" data-page-node-id="N7wp0hWoRYOyCbSDT57TQb"><h3 data-page-node-id="2pxNsGoCGBGg6EHPHg9ED4">请求来源分布</h3></div><div id="chartSource" class="chart-container sm" data-page-node-id="EylBKOg0D2X5urQXdBxDq1"></div></div>
+        <div class="card" data-page-node-id="Ey5cllymWz7JGbve9kLukD"><div class="card-header" data-page-node-id="ZiO4wtJxOMApWyV6Rym26w"><h3 data-page-node-id="STBkzDRhOPCpjYWLBVKV9Z">请求时段分布（按小时）</h3></div><div id="chartHour" class="chart-container sm" data-page-node-id="raFyXMsOERoYybvOyX875f"></div></div>
       </div>
     </div>
 
     <!-- 分析与建议 -->
-    <div class="section insights-panel" id="overviewInsightsSection">
-      <div class="section-head"><h2 class="section-title">分析与建议</h2></div>
-      <div class="section-desc">基于当前筛选数据的自动化分析洞察，涵盖消耗集中度、账户活跃度、部门效率与使用模式，为业务决策提供数据支撑。</div>
-      <div class="insight-grid" id="overviewInsights"></div>
+    <div class="section insights-panel" id="overviewInsightsSection" data-page-node-id="deNSoUU081CfUDZ7urvK3I">
+      <div class="section-head" data-page-node-id="9mUFUGE7m8uj3n5vQdgR27"><h2 class="section-title" data-page-node-id="AusHiWMgoQNKbGOyZRjVNP">分析与建议</h2></div>
+      <div class="section-desc" data-page-node-id="pp9yl1Hdr4klYg5nlP5JnE">基于当前筛选数据的自动化分析洞察，涵盖消耗集中度、账户活跃度、部门效率与使用模式，为业务决策提供数据支撑。</div>
+      <div class="insight-grid" id="overviewInsights" data-page-node-id="rw4aoQQm3BiGgnQZfFExQ5"></div>
     </div>
 
   </div>
 
   <!-- ========== Function Tab ========== -->
-  <div class="tab-panel" id="tab-function" style="display:none;">
+  <div class="tab-panel" id="tab-function" style="display:none;" data-page-node-id="Llg4AH6ET0oD4PvC1W1Tpr">
 
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">业务大类消耗占比</h2><span class="section-badge" id="bizBadge"></span></div>
-      <div class="section-desc">按业务大类统计星币消耗占比，识别主要消耗的业务方向。右侧按占比倒序列出每个大类的消耗占比与星币消耗。</div>
-      <div class="biz-layout">
-        <div id="chartBiz" class="chart-container biz-chart"></div>
-        <div class="biz-legend" id="bizLegend"></div>
+    <div class="section" data-page-node-id="rS3BLk8VeBqv4B5msEfH22">
+      <div class="section-head" data-page-node-id="X9uaiFh3wmLer3hRhj3xPh"><h2 class="section-title" data-page-node-id="BpO3hzdiDsqgpJBPr9r0h2">业务大类消耗占比</h2><span class="section-badge" id="bizBadge" data-page-node-id="L5teEDN17c2h5TwLDxPWK5"></span></div>
+      <div class="section-desc" data-page-node-id="ugGsdB1uBH672LkzoMgVkc">按业务大类统计星币消耗占比，识别主要消耗的业务方向。右侧按占比倒序列出每个大类的消耗占比与星币消耗。</div>
+      <div class="biz-layout" data-page-node-id="dFCxCl7iE1rQL8toGj9N2j">
+        <div id="chartBiz" class="chart-container biz-chart" data-page-node-id="qQVc3AwsEFPY8B2XrwKcoV"></div>
+        <div class="biz-legend" id="bizLegend" data-page-node-id="8U5B3leZYDukAwHPbJ1He2"></div>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">业务大类使用次数占比</h2><span class="section-badge" id="bizCountBadge"></span></div>
-      <div class="section-desc">按业务大类统计使用次数占比，识别主使用场景的业务方向。右侧按次数倒序列出每个大类的次数占比与使用次数。</div>
-      <div class="biz-layout">
-        <div id="chartBizCount" class="chart-container biz-chart"></div>
-        <div class="biz-legend" id="bizCountLegend"></div>
+    <div class="section" data-page-node-id="9LWh4F9YBR90VTf9ytAztt">
+      <div class="section-head" data-page-node-id="8dyzuZEA0GTPg5HI5tEvtu"><h2 class="section-title" data-page-node-id="G7nLE6X8dnnV1B56lOA3GI">业务大类使用次数占比</h2><span class="section-badge" id="bizCountBadge" data-page-node-id="ryWsbeReWDGJBkC2UmsejQ"></span></div>
+      <div class="section-desc" data-page-node-id="ksWhHBgFokrfGUfwcvAYsy">按业务大类统计使用次数占比，识别主使用场景的业务方向。右侧按次数倒序列出每个大类的次数占比与使用次数。</div>
+      <div class="biz-layout" data-page-node-id="TP658txyW9jU8fRuDfcTc5">
+        <div id="chartBizCount" class="chart-container biz-chart" data-page-node-id="9DD7JfSQGpIcv7XfOUytnK"></div>
+        <div class="biz-legend" id="bizCountLegend" data-page-node-id="bH8UmwYDYQgKTEL587EFbs"></div>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">功能消耗明细表</h2><span class="section-badge" id="funcBadge"></span></div>
-      <div class="section-desc">按星币消耗量降序排列的功能明细，含消耗占比、次数占比与单次消耗均值。</div>
-      <div style="overflow-x:auto;">
-        <table class="data-table" id="tblFuncDetail">
-          <thead><tr><th class="num">#</th><th>业务大类</th><th>功能分类</th><th class="num">星币消耗<span class="sort-btn active" data-sort="coin" onclick="setFuncSort('coin',this)" title="按星币消耗倒序">↓ 倒序</span></th><th class="num">星币消耗占比</th><th class="num">使用次数<span class="sort-btn" data-sort="count" onclick="setFuncSort('count',this)" title="按使用次数倒序">↓ 倒序</span></th><th class="num">次数占比</th><th class="num">单次消耗均值<span class="sort-btn" data-sort="avg" onclick="setFuncSort('avg',this)" title="按单次消耗均值倒序">↓ 倒序</span></th></tr></thead>
-          <tbody></tbody>
+    <div class="section" data-page-node-id="S8qRdjPQBr8YJ0vYfEgSwc">
+      <div class="section-head" data-page-node-id="qntORK51IPwFWGs8aojfTK"><h2 class="section-title" data-page-node-id="wyRuyzImFy6LzxJqwGOSlk">功能消耗明细表</h2><span class="section-badge" id="funcBadge" data-page-node-id="vEmbAu9iMMWbioKRAdXlhm"></span></div>
+      <div class="section-desc" data-page-node-id="qgDH592hFwFqk9CDiJbFbD">按星币消耗量降序排列的功能明细，含消耗占比、次数占比与单次消耗均值。</div>
+      <div style="overflow-x:auto;" data-page-node-id="TdWFI845rb20VhUgnpqHPw">
+        <table class="data-table" id="tblFuncDetail" data-page-node-id="I6frhy9cqqGQKgPAWkbJFU">
+          <thead data-page-node-id="qzrsBZI8b2kBfQDoMtw5Qc"><tr data-page-node-id="6Zp1SXYetdLZ3Wn39YG9Nf"><th class="num" data-page-node-id="1uycCtmU3qZcGCGX1nWAjk">#</th><th data-page-node-id="F6u0BbYc4COcSr0pOCqdY0">业务大类</th><th data-page-node-id="rquutCqltRD4oNtDFYP6Rf">功能分类</th><th class="num" data-page-node-id="em9fdQG1v5fheHApaWBcqT">星币消耗<span class="sort-btn active" data-sort="coin" onclick="setFuncSort('coin',this)" title="按星币消耗倒序" data-page-node-id="fNF9EuNpGjrawpCaeWaF8T">↓ 倒序</span></th><th class="num" data-page-node-id="ytdSQGZHjeF8wUhmDGFi53">星币消耗占比</th><th class="num" data-page-node-id="9urPjhElZYI6HF4XesF6EP">使用次数<span class="sort-btn" data-sort="count" onclick="setFuncSort('count',this)" title="按使用次数倒序" data-page-node-id="ky2zOWJ7mosB3T6ILsNXJu">↓ 倒序</span></th><th class="num" data-page-node-id="iykhNafvLkCtaKZzPk6NNa">次数占比</th><th class="num" data-page-node-id="ERDhokKVqACjr5z112f9u8">单次消耗均值<span class="sort-btn" data-sort="avg" onclick="setFuncSort('avg',this)" title="按单次消耗均值倒序" data-page-node-id="uxxhRl2cdpomlE1LW79mtm">↓ 倒序</span></th></tr></thead>
+          <tbody data-page-node-id="HCBFgOFeFoPUn2ANXxttbX"></tbody>
         </table>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">功能 × 部门 交叉分析</h2></div>
-      <div class="section-desc">选择某一部门，查看该部门使用的全部功能（按星币消耗降序），含各自占比、使用次数与主要商户；星币消耗 TOP3 与 使用次数 TOP3 以徽标突出。</div>
-      <div class="cross-persp" id="deptCrossPersp">
-        <button class="persp-btn active" data-p="fe" onclick="setDeptCrossPersp('fe',this)">前端部门</button>
-        <button class="persp-btn" data-p="op" onclick="setDeptCrossPersp('op',this)">运营部门</button>
+    <div class="section" data-page-node-id="5bA1DwPp8zIjqlPUt8p19t">
+      <div class="section-head" data-page-node-id="z3gFRgQ9DTdiSBC1KaDjU4"><h2 class="section-title" data-page-node-id="mdXRJ0Zw2rZpDm0GbQ268k">功能 × 部门 交叉分析</h2></div>
+      <div class="section-desc" data-page-node-id="ir2mo3aBHnjNc8caI3aODX">选择某一部门，查看该部门使用的全部功能（按星币消耗降序），含各自占比、使用次数与主要商户；星币消耗 TOP3 与 使用次数 TOP3 以徽标突出。</div>
+      <div class="cross-persp" id="deptCrossPersp" data-page-node-id="UGq9zyEQkkprNxDdbMcDAG">
+        <button class="persp-btn active" data-p="fe" onclick="setDeptCrossPersp('fe',this)" data-page-node-id="05p24hbvVmgyQdAALez6nG">前端部门</button>
+        <button class="persp-btn" data-p="op" onclick="setDeptCrossPersp('op',this)" data-page-node-id="2yDHOZdAGHnhbsDXEXWbNb">运营部门</button>
       </div>
-      <div class="cross-tabs" id="deptCrossTabs"></div>
-      <div id="deptCrossBody"></div>
+      <div class="cross-tabs" id="deptCrossTabs" data-page-node-id="Zp8s1WGEPl9rA2Ee9yrR6n"></div>
+      <div id="deptCrossBody" data-page-node-id="sOoHuJdFyLEHOvA8VtaukF"></div>
     </div>
 
-    <div class="section">
-      <div class="section-head"><h2 class="section-title">功能 × 解决方案 交叉分析</h2></div>
-      <div class="section-desc">选择某一解决方案，查看该方案下使用的全部功能（按星币消耗降序），含各自占比、使用次数与主要商户；星币消耗 TOP3 与 使用次数 TOP3 以徽标突出。</div>
-      <div class="cross-tabs" id="solCrossTabs"></div>
-      <div id="solCrossBody"></div>
+    <div class="section" data-page-node-id="uzKt8IbP8D8h71XybjxkyX">
+      <div class="section-head" data-page-node-id="Z8BeFrjM5bLWSS3iaARMrQ"><h2 class="section-title" data-page-node-id="GY3Hp0BWbWssdBzMM8ThQB">功能 × 解决方案 交叉分析</h2></div>
+      <div class="section-desc" data-page-node-id="9MdiXWGgY3YS5U5c9Y6YVv">选择某一解决方案，查看该方案下使用的全部功能（按星币消耗降序），含各自占比、使用次数与主要商户；星币消耗 TOP3 与 使用次数 TOP3 以徽标突出。</div>
+      <div class="cross-tabs" id="solCrossTabs" data-page-node-id="BsMsuimyAtLJSrHxqdcSx1"></div>
+      <div id="solCrossBody" data-page-node-id="o0h2BoA7ueBe75zyrmfH3H"></div>
     </div>
 
     <!-- 分析与建议 -->
-    <div class="section insights-panel" id="functionInsightsSection">
-      <div class="section-head"><h2 class="section-title">分析与建议</h2></div>
-      <div class="section-desc">基于当前筛选数据的功能消耗效率与结构分析，识别高价值功能、成本优化空间与覆盖度短板，驱动功能迭代决策。</div>
-      <div class="insight-grid" id="functionInsights"></div>
+    <div class="section insights-panel" id="functionInsightsSection" data-page-node-id="1QqvaQSUtTDfrQofbJSiDR">
+      <div class="section-head" data-page-node-id="uwNHQFJ51rZE6Q6U2eP7Kl"><h2 class="section-title" data-page-node-id="gJHXjgLMnE4SAxSj1UfYEF">分析与建议</h2></div>
+      <div class="section-desc" data-page-node-id="pv0GQsjKtDfAbgfRfWXCYZ">基于当前筛选数据的功能消耗效率与结构分析，识别高价值功能、成本优化空间与覆盖度短板，驱动功能迭代决策。</div>
+      <div class="insight-grid" id="functionInsights" data-page-node-id="o8Lw4bCFfVD6BSW3g8ObDk"></div>
     </div>
 
   </div>
 
-  <div class="footer">星币消耗效果看板 | 自动生成</div>
+  <div class="footer" data-page-node-id="EiFhH5WCUX9dimTcboSBgC">星币消耗效果看板 | 自动生成</div>
 
 </div>
 
@@ -1056,11 +1059,15 @@ function renderBizPie(data){
     series:[{type:'pie', radius:['38%','68%'], center:['50%','52%'], avoidLabelOverlap:true, data:barr, label:{show:true, formatter:'{b}\n{d}%', fontSize:10, color:'#475569'}, labelLine:{length:12, length2:12}}]
   }, true);
   document.getElementById('bizBadge').textContent = arr.length + ' 个大类 · 共 ' + Math.round(total).toLocaleString() + ' 星币';
-  document.getElementById('bizLegend').innerHTML = barr.map((d,i)=>{
+  const maxPct = Math.max.apply(null, arr.map(d=> total ? d.value/total*100 : 0));
+  document.getElementById('bizLegend').innerHTML = arr.map((d,i)=>{
     const pct = total ? d.value/total*100 : 0;
+    const barW = maxPct ? pct/maxPct*100 : 0;
+    const color = BIZ_PALETTE[i%BIZ_PALETTE.length];
     return '<div class="biz-legend-item">'+
-      '<span class="dot" style="background:'+BIZ_PALETTE[i%BIZ_PALETTE.length]+'"></span>'+
+      '<span class="dot" style="background:'+color+'"></span>'+
       '<span class="bn">'+d.name+'</span>'+
+      '<span class="biz-bar-track"><span class="biz-bar-fill" style="width:'+Math.max(1.5,barW).toFixed(1)+'%;background:'+color+'"></span></span>'+
       '<span class="bp">'+pct.toFixed(1)+'%</span>'+
       '<span class="bc">'+Math.round(d.value).toLocaleString()+'</span>'+
     '</div>';
@@ -1078,11 +1085,15 @@ function renderBizCount(data){
     series:[{type:'pie', radius:['38%','68%'], center:['50%','52%'], avoidLabelOverlap:true, data:barr, label:{show:true, formatter:'{b}\n{d}%', fontSize:10, color:'#475569'}, labelLine:{length:12, length2:12}}]
   }, true);
   document.getElementById('bizCountBadge').textContent = arr.length + ' 个大类 · 共 ' + total.toLocaleString() + ' 次';
-  document.getElementById('bizCountLegend').innerHTML = barr.map((d,i)=>{
+  const maxPct = Math.max.apply(null, arr.map(d=> total ? d.value/total*100 : 0));
+  document.getElementById('bizCountLegend').innerHTML = arr.map((d,i)=>{
     const pct = total ? d.value/total*100 : 0;
+    const barW = maxPct ? pct/maxPct*100 : 0;
+    const color = BIZ_PALETTE[i%BIZ_PALETTE.length];
     return '<div class="biz-legend-item">'+
-      '<span class="dot" style="background:'+BIZ_PALETTE[i%BIZ_PALETTE.length]+'"></span>'+
+      '<span class="dot" style="background:'+color+'"></span>'+
       '<span class="bn">'+d.name+'</span>'+
+      '<span class="biz-bar-track"><span class="biz-bar-fill" style="width:'+Math.max(1.5,barW).toFixed(1)+'%;background:'+color+'"></span></span>'+
       '<span class="bp">'+pct.toFixed(1)+'%</span>'+
       '<span class="bc">'+d.value.toLocaleString()+'</span>'+
     '</div>';
