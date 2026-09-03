@@ -328,7 +328,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
   <div class="report-header-inner">
     <h1>星币消耗效果看板</h1>
     <div class="subtitle"><span class="date-badge" id="dateBadge">数据截止: --</span></div>
-    <div class="update-time">数据更新时间：2026-09-03 19:48</div>
+    <div class="update-time">数据更新时间：2026-09-03 20:08</div>
     <!-- 【WIMO 数据说明 - 2026-08-25】当前研发提供的wimo数据无法区分作图or视频，先记为作图/视频大类 -->
     <div style="margin-top:10px;padding:10px 14px;border-radius:8px;background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;font-size:13px;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,sans-serif;">&#9888; 当前研发提供的wimo数据无法区分作图or视频，先记为作图/视频大类。</div>
   </div>
@@ -468,6 +468,15 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Mi
       <div class="biz-layout">
         <div id="chartBiz" class="chart-container biz-chart"></div>
         <div class="biz-legend" id="bizLegend"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><h2 class="section-title">业务大类使用次数占比</h2><span class="section-badge" id="bizCountBadge"></span></div>
+      <div class="section-desc">按业务大类统计使用次数占比，识别主使用场景的业务方向。右侧按次数倒序列出每个大类的次数占比与使用次数。</div>
+      <div class="biz-layout">
+        <div id="chartBizCount" class="chart-container biz-chart"></div>
+        <div class="biz-legend" id="bizCountLegend"></div>
       </div>
     </div>
 
@@ -1029,6 +1038,7 @@ function orderList(list, order){
 
 function renderFunctionTab(data){
   renderBizPie(data);
+  renderBizCount(data);
   renderFuncDetail(data);
   renderDeptCross();
   renderSolCross();
@@ -1053,6 +1063,28 @@ function renderBizPie(data){
       '<span class="bn">'+d.name+'</span>'+
       '<span class="bp">'+pct.toFixed(1)+'%</span>'+
       '<span class="bc">'+Math.round(d.value).toLocaleString()+'</span>'+
+    '</div>';
+  }).join('');
+}
+
+function renderBizCount(data){
+  const bm = groupBy(data, r=>r.biz_cat);
+  const arr = [...bm.entries()].map(([k,v])=>({name:k, value:v.count})).sort((a,b)=>b.value-a.value);
+  const total = arr.reduce((s,a)=>s+a.value,0);
+  const barr = arr.map((d,i)=>({...d, itemStyle:{color:BIZ_PALETTE[i%BIZ_PALETTE.length]}}));
+  const chart = ensureChart('chartBizCount');
+  chart.setOption({
+    tooltip:{trigger:'item', formatter:'{b}: {c} 次 ({d}%)'},
+    series:[{type:'pie', radius:['38%','68%'], center:['50%','52%'], avoidLabelOverlap:true, data:barr, label:{show:true, formatter:'{b}\n{d}%', fontSize:10, color:'#475569'}, labelLine:{length:12, length2:12}}]
+  }, true);
+  document.getElementById('bizCountBadge').textContent = arr.length + ' 个大类 · 共 ' + total.toLocaleString() + ' 次';
+  document.getElementById('bizCountLegend').innerHTML = barr.map((d,i)=>{
+    const pct = total ? d.value/total*100 : 0;
+    return '<div class="biz-legend-item">'+
+      '<span class="dot" style="background:'+BIZ_PALETTE[i%BIZ_PALETTE.length]+'"></span>'+
+      '<span class="bn">'+d.name+'</span>'+
+      '<span class="bp">'+pct.toFixed(1)+'%</span>'+
+      '<span class="bc">'+d.value.toLocaleString()+'</span>'+
     '</div>';
   }).join('');
 }
