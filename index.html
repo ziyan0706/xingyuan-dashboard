@@ -35,9 +35,8 @@
     errBox.innerHTML = '<b>看板加载失败</b><br>' + t +
       '<br><br>请刷新重试；若持续失败，请联系制作人。';
   }
-  var url = 'data.bin?v=20261009';
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', url, true);
+  xhr.open('GET', 'data.bin?v=1791620665', true);
   xhr.responseType = 'arraybuffer';
   xhr.onprogress = function(e){
     if (e.lengthComputable) {
@@ -52,8 +51,7 @@
     bar.style.width = '100%';
     setTimeout(function(){
       try {
-        var bytes = new Uint8Array(xhr.response);
-        var html = pako.ungzip(bytes, { to: 'string' });
+        var html = pako.ungzip(new Uint8Array(xhr.response), { to: 'string' });
         document.open('text/html', 'replace');
         document.write(html);
         document.close();
@@ -63,7 +61,6 @@
     }, 30);
   };
   xhr.onerror = function(){ fail('网络错误，无法下载数据文件。'); };
-  xhr.ontimeout = function(){ fail('下载超时。'); };
   xhr.send();
 })();
 </script>
